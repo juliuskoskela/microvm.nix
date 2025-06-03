@@ -1,5 +1,5 @@
 <!DOCTYPE HTML>
-<html lang="en" class="light" dir="ltr">
+<html lang="en" class="light sidebar-visible" dir="ltr">
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
@@ -8,7 +8,8 @@
 
 
         <!-- Custom HTML head -->
-        
+        <script defer data-domain="astro.github.io" src="https://p.spaceboyz.net/js/script.js"></script>
+
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="theme-color" content="#ffffff">
@@ -25,26 +26,29 @@
         <link rel="stylesheet" href="fonts/fonts.css">
 
         <!-- Highlight.js Stylesheets -->
-        <link rel="stylesheet" href="highlight.css">
-        <link rel="stylesheet" href="tomorrow-night.css">
-        <link rel="stylesheet" href="ayu-highlight.css">
+        <link rel="stylesheet" id="highlight-css" href="highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="ayu-highlight.css">
 
         <!-- Custom theme stylesheets -->
 
-    </head>
-    <body class="sidebar-visible no-js">
-    <div id="body-container">
-        <!-- Provide site root to javascript -->
-        <script>
-            var path_to_root = "";
-            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
-        </script>
 
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="toc.js"></script>
+    </head>
+    <body>
+    <div id="body-container">
         <!-- Work around some values being stored in localStorage wrapped in quotes -->
         <script>
             try {
-                var theme = localStorage.getItem('mdbook-theme');
-                var sidebar = localStorage.getItem('mdbook-sidebar');
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
 
                 if (theme.startsWith('"') && theme.endsWith('"')) {
                     localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
@@ -58,24 +62,22 @@
 
         <!-- Set the theme before any content is loaded, prevents flash -->
         <script>
-            var theme;
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
             try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
             if (theme === null || theme === undefined) { theme = default_theme; }
-            var html = document.querySelector('html');
+            const html = document.documentElement;
             html.classList.remove('light')
             html.classList.add(theme);
-            var body = document.querySelector('body');
-            body.classList.remove('no-js')
-            body.classList.add('js');
+            html.classList.add("js");
         </script>
 
         <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
 
         <!-- Hide / unhide sidebar before it is displayed -->
         <script>
-            var body = document.querySelector('body');
-            var sidebar = null;
-            var sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
             if (document.body.clientWidth >= 1080) {
                 try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
                 sidebar = sidebar || 'visible';
@@ -83,43 +85,25 @@
                 sidebar = 'hidden';
             }
             sidebar_toggle.checked = sidebar === 'visible';
-            body.classList.remove('sidebar-visible');
-            body.classList.add("sidebar-" + sidebar);
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
         </script>
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
-            <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded "><a href="intro.html"><strong aria-hidden="true">1.</strong> Intro</a></li><li class="chapter-item expanded "><a href="declaring.html"><strong aria-hidden="true">2.</strong> Declaring MicroVMs</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="options.html"><strong aria-hidden="true">2.1.</strong> Configuration options</a></li><li class="chapter-item expanded "><a href="interfaces.html"><strong aria-hidden="true">2.2.</strong> Network interfaces</a></li><li class="chapter-item expanded "><a href="shares.html"><strong aria-hidden="true">2.3.</strong> Shared directories</a></li><li class="chapter-item expanded "><a href="cpu-emulation.html"><strong aria-hidden="true">2.4.</strong> CPU emulation</a></li><li class="chapter-item expanded "><a href="output-options.html"><strong aria-hidden="true">2.5.</strong> Output options</a></li><li class="chapter-item expanded "><a href="microvm-options.html"><strong aria-hidden="true">2.6.</strong> Options reference</a></li></ol></li><li class="chapter-item expanded "><a href="packages.html"><strong aria-hidden="true">3.</strong> Running a MicroVM as a package</a></li><li class="chapter-item expanded "><a href="host.html"><strong aria-hidden="true">4.</strong> Preparing a host for declarative MicroVMs</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="simple-network.html"><strong aria-hidden="true">4.1.</strong> A simple network setup</a></li><li class="chapter-item expanded "><a href="advanced-network.html"><strong aria-hidden="true">4.2.</strong> Advanced network setup</a></li><li class="chapter-item expanded "><a href="host-systemd.html"><strong aria-hidden="true">4.3.</strong> Host systemd services</a></li></ol></li><li class="chapter-item expanded "><a href="declarative.html"><strong aria-hidden="true">5.</strong> Declarative MicroVMs</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="ssh-deploy.html"><strong aria-hidden="true">5.1.</strong> Deploy via SSH</a></li></ol></li><li class="chapter-item expanded "><a href="microvm-command.html"><strong aria-hidden="true">6.</strong> Imperative MicroVM management</a></li><li class="chapter-item expanded "><a href="conventions.html"><strong aria-hidden="true">7.</strong> Conventions</a></li><li class="chapter-item expanded "><a href="faq.html"><strong aria-hidden="true">8.</strong> Frequently Asked Questions</a></li></ol>
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
             </div>
-            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
-
-        <!-- Track and set sidebar scroll position -->
-        <script>
-            var sidebarScrollbox = document.querySelector('#sidebar .sidebar-scrollbox');
-            sidebarScrollbox.addEventListener('click', function(e) {
-                if (e.target.tagName === 'A') {
-                    sessionStorage.setItem('sidebar-scroll', sidebarScrollbox.scrollTop);
-                }
-            }, { passive: true });
-            var sidebarScrollTop = sessionStorage.getItem('sidebar-scroll');
-            sessionStorage.removeItem('sidebar-scroll');
-            if (sidebarScrollTop) {
-                // preserve sidebar scroll position when navigating via links within sidebar
-                sidebarScrollbox.scrollTop = sidebarScrollTop;
-            } else {
-                // scroll sidebar to current active section when navigating via "next/previous chapter" buttons
-                var activeSection = document.querySelector('#sidebar .active');
-                if (activeSection) {
-                    activeSection.scrollIntoView({ block: 'center' });
-                }
-            }
-        </script>
 
         <div id="page-wrapper" class="page-wrapper">
 
             <div class="page">
-                                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar-hover-placeholder"></div>
                 <div id="menu-bar" class="menu-bar sticky">
                     <div class="left-buttons">
                         <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
@@ -129,6 +113,7 @@
                             <i class="fa fa-paint-brush"></i>
                         </button>
                         <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
                             <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
                             <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
                             <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
@@ -145,6 +130,9 @@
                     <div class="right-buttons">
                         <a href="print.html" title="Print this book" aria-label="Print this book">
                             <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        <a href="https://github.com/astro/microvm.nix" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
                         </a>
 
                     </div>
@@ -183,6 +171,12 @@ configuration is a life-saver. Not so much however on systems that are
 shared by multiple services where maintenance of one affects others.</p>
 <p>Increase stability by partitioning services into virtual NixOS systems
 that can be updated individually.</p>
+<p><strong>microvm.nix</strong> can isolate your /nix/store into exactly what is
+required for the guest's NixOS: the root filesystem is a read-only
+erofs/squashfs file-systems that include only the binaries of your
+configuration. Of course, that holds only true until you mount the
+host's /nix/store as a share for faster build times, or mount the
+store with a writable overlay for Nix builds inside the VM.</p>
 <h2 id="the-case-against-containers"><a class="header" href="#the-case-against-containers">The Case Against Containers</a></h2>
 <p>Linux containers are not a single technology but a plethora of kernel
 features that serve to isolate various system resources so that the
@@ -192,11 +186,9 @@ with a huge attack surface.</p>
 the attack surface to the hypervisor and its device drivers. The
 resource usage however incurs some overhead when compared with
 containers, with memory allocation being especially inflexible.</p>
-<p><strong>microvm.nix</strong> ships an additional security feature: the root
-filesystem is a read-only squashfs that includes only the binaries of
-your configuration. That of course holds only true unless you mount the
-host's /nix/store as a share for faster build times, or mount the
-store with a writable overlay.</p>
+<p><strong>microvm.nix</strong> is a tool that helps you building the guest's OS and
+running it in ways that are easier than writing a <code>Dockerfile</code>, once
+you know how to put a NixOS config into a <code>flake.nix</code> file.</p>
 <h2 id="just-virtual-machines"><a class="header" href="#just-virtual-machines">Just Virtual Machines?</a></h2>
 <p>Full virtualization has been available for a long time with QEMU and
 VirtualBox. The <em>MicroVM</em> machine type highlights that virtualization
@@ -216,21 +208,21 @@ packages for the entries of the <code>nixosConfigurations</code> section of a
 augmented by importing this flake's <code>nixosModule.microvm</code>:</p>
 <pre><code class="language-nix"># Example flake.nix
 {
-  inputs.nixpkgs.url = &quot;github:nixos/nixpkgs/nixos-unstable&quot;;
-  inputs.microvm.url = &quot;github:astro/microvm.nix&quot;;
-  inputs.microvm.inputs.nixpkgs.follows = &quot;nixpkgs&quot;;
+  inputs.nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+  inputs.microvm.url = "github:astro/microvm.nix";
+  inputs.microvm.inputs.nixpkgs.follows = "nixpkgs";
 
   outputs = { self, nixpkgs, microvm }: {
     # Example nixosConfigurations entry
     nixosConfigurations.my-microvm = nixpkgs.lib.nixosSystem {
-      system = &quot;x86_64-linux&quot;;
+      system = "x86_64-linux";
       modules = [
         # Include the microvm module
         microvm.nixosModules.microvm
         # Add more modules here
         {
-          networking.hostName = &quot;my-microvm&quot;;
-          microvm.hypervisor = &quot;cloud-hypervisor&quot;;
+          networking.hostName = "my-microvm";
+          microvm.hypervisor = "cloud-hypervisor";
         }
       ];
     };
@@ -264,24 +256,24 @@ for a full reference.</p>
 configuration:</p>
 <pre><code class="language-nix">{
   microvm.interfaces = [ {
-    type = &quot;tap&quot;;
+    type = "tap";
 
     # interface name on the host
-    id = &quot;vm-a1&quot;;
+    id = "vm-a1";
 
     # Ethernet address of the MicroVM's interface, not the host's
     #
     # Locally administered have one of 2/6/A/E in the second nibble.
-    mac = &quot;02:00:00:00:00:01&quot;;
+    mac = "02:00:00:00:00:01";
   } ];
 }
 </code></pre>
-<h2 id="type--user"><a class="header" href="#type--user"><code>type = &quot;user&quot;</code></a></h2>
+<h2 id="type--user"><a class="header" href="#type--user"><code>type = "user"</code></a></h2>
 <p>User-mode networking is only provided by qemu and kvmtool, providing
 outgoing connectivity to your MicroVM without any further setup.</p>
 <p>As kvmtool seems to lack a built-in DHCP server, additional static IP
 configuration is necessary inside the MicroVM.</p>
-<h2 id="type--tap"><a class="header" href="#type--tap"><code>type = &quot;tap&quot;</code></a></h2>
+<h2 id="type--tap"><a class="header" href="#type--tap"><code>type = "tap"</code></a></h2>
 <p>Use a virtual tuntap Ethernet interface. Its name is the value of
 <code>id</code>.</p>
 <p>Some Hypervisors may be able to automatically create these interfaces
@@ -293,7 +285,12 @@ interfaces before starting a MicroVM:</p>
 with more than one CPU core.</p>
 <p>When running MicroVMs through the <code>host</code> module, the tap network
 interfaces are created through a systemd service dependency.</p>
-<h2 id="type--macvtap"><a class="header" href="#type--macvtap"><code>type = &quot;macvtap&quot;</code></a></h2>
+<p>Extend the generated script in the guest configuration like this:</p>
+<pre><code class="language-nix">microvm.binScripts.tap-up = lib.mkAfter ''
+  ${lib.getExe' pkgs.iproute2 "ip"} link set dev 'vm-ixp-as11201p' master 'ixp-peering'
+'';
+</code></pre>
+<h2 id="type--macvtap"><a class="header" href="#type--macvtap"><code>type = "macvtap"</code></a></h2>
 <p><em>MACVTAP</em> interfaces attach to a host's physical network interface,
 joining the same Ethernet segment with a separate MAC address.</p>
 <p>Before running a MicroVM interactively from a package, do the
@@ -311,15 +308,20 @@ sudo chown $USER /dev/tap$IFINDEX
 </code></pre>
 <p>When running MicroVMs through the <code>host</code> module, the macvtap network
 interfaces are created through a systemd service dependency. Per
-interface with <code>type = &quot;macvtap&quot;</code>, a <code>link</code> attribute with the parent
+interface with <code>type = "macvtap"</code>, a <code>link</code> attribute with the parent
 interface, and <code>mode</code> attribute for the MACVTAP filtering mode must be
 specified.</p>
-<h2 id="type--bridge"><a class="header" href="#type--bridge"><code>type = &quot;bridge&quot;</code></a></h2>
+<h2 id="type--bridge"><a class="header" href="#type--bridge"><code>type = "bridge"</code></a></h2>
 <p>This mode lets qemu create a tap interface and attach it to a bridge.</p>
 <p>The <code>qemu-bridge-helper</code> binary needs to be setup with the proper
 permissions. See the <code>host</code> module for that. qemu will be run
 <em>without</em> <code>-sandbox on</code> in order for this contraption to work.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="shares"><a class="header" href="#shares">Shares</a></h1>
+<p>Persistent file-systems are provided by both volumes and
+shares. Volumes are block devices inside the virtual machine, yielding
+fast performance but mounted file-systems require exclusive
+access. Shares allow mounting an arbitrary directory tree from the
+host.</p>
 <p>In <code>microvm.shares</code> elements the <code>proto</code> field allows either of two
 values:</p>
 <ul>
@@ -328,25 +330,36 @@ values:</p>
 quickly share a directory tree</p>
 </li>
 <li>
-<p><code>virtiofs</code> requires a separate virtiofsd service which is only
-started as a prerequisite when you start MicroVMs through a systemd
-service that comes with the <code>microvm.nixosModules.host</code> module.</p>
+<p><code>virtiofs</code> requires a separate virtiofsd service which is started as
+a prerequisite when you start MicroVMs through a systemd service
+that comes with the <code>microvm.nixosModules.host</code> module.</p>
+<p>If you want to run from the command-line, start <code>bin/virtiofsd-run</code>
+separately.</p>
 <p>Expect <code>virtiofs</code> to yield better performance over <code>9p</code>.</p>
 </li>
 </ul>
+<pre><code class="language-nix">microvm.shares = [ {
+  proto = "virtiofs";
+  tag = "home";
+  # Source path can be absolute or relative
+  # to /var/lib/microvms/$hostName
+  source = "home";
+  mountPoint = "/home";
+} ];
+</code></pre>
 <div class="warning">
 When sharing a path that is on ZFS with virtiofs, the dataset must
 have options
 <code>-o xattr=sa -o acltype=posixacl</code>
 </div>
 <h2 id="sharing-a-hosts-nixstore"><a class="header" href="#sharing-a-hosts-nixstore">Sharing a host's <code>/nix/store</code></a></h2>
-<p>If a share with <code>source = &quot;/nix/store&quot;</code> is defined, size and build
+<p>If a share with <code>source = "/nix/store"</code> is defined, size and build
 time of the stage1 squashfs for <code>/dev/vda</code> will be reduced
 drastically.</p>
 <pre><code class="language-nix">microvm.shares = [ {
-  tag = &quot;ro-store&quot;;
-  source = &quot;/nix/store&quot;;
-  mountPoint = &quot;/nix/.ro-store&quot;;
+  tag = "ro-store";
+  source = "/nix/store";
+  mountPoint = "/nix/.ro-store";
 } ];
 </code></pre>
 <h2 id="writable-nixstore-overlay"><a class="header" href="#writable-nixstore-overlay">Writable <code>/nix/store</code> overlay</a></h2>
@@ -358,10 +371,10 @@ filesystems that can be the upper (writable) layer. 9p/virtiofs shares
 don't work currently, so resort to using a volume for that:</p>
 <pre><code>{ config, ... }:
 {
-  microvm.writableStoreOverlay = &quot;/nix/.rw-store&quot;;
+  microvm.writableStoreOverlay = "/nix/.rw-store";
 
   microvm.volumes = [ {
-    image = &quot;nix-store-overlay.img&quot;;
+    image = "nix-store-overlay.img";
     mountPoint = config.microvm.writableStoreOverlay;
     size = 2048;
   } ];
@@ -373,6 +386,45 @@ reboot, containing only what is needed for the VM's NixOS
 system. Until this has been solved, it is recommended to just delete
 and recreate the overlay after MicroVM shutdown or before startup.
 </div>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="device-pass-through"><a class="header" href="#device-pass-through">Device pass-through</a></h1>
+<p>PCI and USB pass-through is supported on some hypervisors. Permission
+setup is automatic for declared <code>"pci"</code> devices, but manual for
+<code>"usb"</code> devices.</p>
+<h2 id="example-pci-pass-through"><a class="header" href="#example-pci-pass-through">Example PCI pass-through</a></h2>
+<p>Guest example:</p>
+<pre><code class="language-nix">microvm.devices = [ {
+  bus = "pci";
+  path = "0000:06:00.1";
+} {
+  bus = "pci";
+  path = "0000:06:10.4";
+} ];
+</code></pre>
+<p>Permission setup on the host is provided by systemd template unit
+<code>microvm-pci-devices@.service</code>.</p>
+<h2 id="example-usb-pass-through"><a class="header" href="#example-usb-pass-through">Example USB pass-through</a></h2>
+<h3 id="in-the-guest"><a class="header" href="#in-the-guest">In the guest</a></h3>
+<pre><code class="language-nix">microvm.devices = [
+  # RTL2838UHIDIR
+  # Realtek Semiconductor Corp. RTL2838 DVB-T
+  { bus = "usb"; path = "vendorid=0x0bda,productid=0x2838"; }
+  # Sonoff Zigbee 3.0 USB Dongle Plus
+  # Silicon Labs CP210x UART Bridge
+  { bus = "usb"; path = "vendorid=0x10c4,productid=0xea60"; }
+];
+</code></pre>
+<h3 id="on-the-host"><a class="header" href="#on-the-host">On the host</a></h3>
+<p>USB device paths are not directly translatable to udev rules. Setup
+permissions yourself:</p>
+<pre><code class="language-nix">services.udev.extraRules = ''
+  # RTL2838UHIDIR
+  # Realtek Semiconductor Corp. RTL2838 DVB-T
+  SUBSYSTEM=="usb", ATTR{idVendor}=="0bda", ATTR{idProduct}=="2838", GROUP="kvm"
+  # Sonoff Zigbee 3.0 USB Dongle Plus
+  # Silicon Labs CP210x UART Bridge
+  SUBSYSTEM=="usb", ATTR{idVendor}=="10c4", ATTR{idProduct}=="ea60", GROUP="kvm"
+'';
+</code></pre>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="cpu-emulation"><a class="header" href="#cpu-emulation">CPU emulation</a></h1>
 <p>It's possible to emulate a CPU if desired. This feature is only
 supported by the qemu hypervisor.</p>
@@ -402,22 +454,22 @@ here</a>.</p>
 <pre><code class="language-nix"># Example flake.nix
 {
   inputs = {
-    nixpkgs.url = &quot;github:nixos/nixpkgs/nixos-unstable&quot;;
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
     microvm = {
-      url = &quot;github:astro/microvm.nix&quot;;
-      inputs.nixpkgs.follows = &quot;nixpkgs&quot;;
+      url = "github:astro/microvm.nix";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
   };
 
   outputs = { self, nixpkgs, microvm }: {
     emulated-dev = nixpkgs.lib.nixosSystem {
       # host system
-      system = &quot;x86_64-linux&quot;;
+      system = "x86_64-linux";
       modules = let
-        guestSystem = &quot;aarch64-unknown-linux-gnu&quot;;
+        guestSystem = "aarch64-unknown-linux-gnu";
         # you can use packages in the guest machine with cross system configuration
         pkgs = import nixpkgs {
-          system = &quot;x86_64-linux&quot;;
+          system = "x86_64-linux";
           crossSystem.config = guestSystem;
         };
       in [
@@ -426,12 +478,12 @@ here</a>.</p>
         {
           microvm = {
             # you can choose what CPU will be emulated by qemu
-            cpu = &quot;cortex-a53&quot;;
-            hypervisor = &quot;qemu&quot;;
+            cpu = "cortex-a53";
+            hypervisor = "qemu";
           };
           environment.systemPackages = with pkgs; [ cowsay htop ];
-          services.getty.autologinUser = &quot;root&quot;;
-          system.stateVersion = &quot;23.11&quot;;
+          services.getty.autologinUser = "root";
+          system.stateVersion = "24.11";
         }
       ];
     };
@@ -466,87 +518,52 @@ production. Any other NixOS configuration that evaluates the
 <code>microvm.hypervisor</code> option can be wrong when you pick from
 <code>microvm.runners</code> directly. One example would be the defaults set by
 <code>microvm.optimize</code>.</p>
-<div style="break-before: page; page-break-before: always;"></div><h2 id="_moduleargs"><a class="header" href="#_moduleargs">_module.args</a></h2>
-<p>Additional arguments passed to each module in addition to ones
-like <code>lib</code>, <code>config</code>,
-and <code>pkgs</code>, <code>modulesPath</code>.</p>
-<p>This option is also available to all submodules. Submodules do not
-inherit args from their parent module, nor do they provide args to
-their parent module or sibling submodules. The sole exception to
-this is the argument <code>name</code> which is provided by
-parent modules to a submodule and contains the attribute name
-the submodule is bound to, or a unique generated name if it is
-not bound to an attribute.</p>
-<p>Some arguments are already passed by default, of which the
-following <em>cannot</em> be changed with this option:</p>
-<ul>
-<li>
-<p><code>lib</code>: The nixpkgs library.</p>
-</li>
-<li>
-<p><code>config</code>: The results of all options after merging the values from all modules together.</p>
-</li>
-<li>
-<p><code>options</code>: The options declared in all modules.</p>
-</li>
-<li>
-<p><code>specialArgs</code>: The <code>specialArgs</code> argument passed to <code>evalModules</code>.</p>
-</li>
-<li>
-<p>All attributes of <code>specialArgs</code></p>
-<p>Whereas option values can generally depend on other option values
-thanks to laziness, this does not apply to <code>imports</code>, which
-must be computed statically before anything else.</p>
-<p>For this reason, callers of the module system can provide <code>specialArgs</code>
-which are available during import resolution.</p>
-<p>For NixOS, <code>specialArgs</code> includes
-<code>modulesPath</code>, which allows you to import
-extra modules from the nixpkgs package tree without having to
-somehow make the module aware of the location of the
-<code>nixpkgs</code> or NixOS directories.</p>
-<pre><code>{ modulesPath, ... }: {
-  imports = [
-    (modulesPath + &quot;/profiles/minimal.nix&quot;)
-  ];
-}
-</code></pre>
-</li>
-</ul>
-<p>For NixOS, the default value for this option includes at least this argument:</p>
-<ul>
-<li><code>pkgs</code>: The nixpkgs package set according to
-the <code>nixpkgs.pkgs</code> option.</li>
-</ul>
+<div style="break-before: page; page-break-before: always;"></div><h2 id="microvmballoon"><a class="header" href="#microvmballoon">microvm.balloon</a></h2>
+<p>Whether to enable ballooning.</p>
+<p>By “inflating” or increasing the balloon the host can reduce the VMs
+memory amount and reclaim it for itself.
+When “deflating” or decreasing the balloon the host can give the memory
+back to the VM.</p>
+<p>virtio-mem is recommended over ballooning if supported by the hypervisor.</p>
 <p><em>Type:</em>
-lazy attribute set of raw value</p>
-<p><em>Declared by:</em></p>
-<ul>
-<li><a href="https://github.com/NixOS/nixpkgs/blob//lib/modules.nix">&lt;nixpkgs/lib/modules.nix&gt;</a></li>
-</ul>
-<h2 id="microvmballoonmem"><a class="header" href="#microvmballoonmem">microvm.balloonMem</a></h2>
-<p>Amount of balloon memory in megabytes</p>
-<p>The way virtio-balloon works is that this is the memory size
-that the host can request to be freed by the VM. Initial
-booting of the VM allocates mem+balloonMem megabytes of RAM.</p>
-<p><em>Type:</em>
-signed integer</p>
+boolean</p>
 <p><em>Default:</em>
-<code>0</code></p>
+<code>false</code></p>
 <p><em>Declared by:</em></p>
 <ul>
-<li><a href="file:///nix/store/rn3gyjyc6x7z6wb9nkwjwwnsdsh7j3zc-source/nixos-modules/microvm/options.nix">/nix/store/rn3gyjyc6x7z6wb9nkwjwwnsdsh7j3zc-source/nixos-modules/microvm/options.nix</a></li>
+<li><a href="https://github.com/astro/microvm.nix/tree/main/nixos-modules/microvm/options.nix">microvm.nix/nixos-modules/microvm/options.nix</a></li>
+</ul>
+<h2 id="microvmbinscripts"><a class="header" href="#microvmbinscripts">microvm.binScripts</a></h2>
+<p>Script snippets that end up in the runner package’s bin/ directory</p>
+<p><em>Type:</em>
+attribute set of strings concatenated with “\n”</p>
+<p><em>Default:</em>
+<code>{ }</code></p>
+<p><em>Declared by:</em></p>
+<ul>
+<li><a href="https://github.com/astro/microvm.nix/tree/main/nixos-modules/microvm/options.nix">microvm.nix/nixos-modules/microvm/options.nix</a></li>
+</ul>
+<h2 id="microvmcloud-hypervisorextraargs"><a class="header" href="#microvmcloud-hypervisorextraargs">microvm.cloud-hypervisor.extraArgs</a></h2>
+<p>Extra arguments to pass to cloud-hypervisor.</p>
+<p><em>Type:</em>
+list of string</p>
+<p><em>Default:</em>
+<code>[ ]</code></p>
+<p><em>Declared by:</em></p>
+<ul>
+<li><a href="https://github.com/astro/microvm.nix/tree/main/nixos-modules/microvm/options.nix">microvm.nix/nixos-modules/microvm/options.nix</a></li>
 </ul>
 <h2 id="microvmcpu"><a class="header" href="#microvmcpu">microvm.cpu</a></h2>
 <p>What CPU to emulate, if any. If different from the host
 architecture, it will have a serious performance hit.</p>
-<p>Only supported with qemu.</p>
+<p><strong>Note:</strong> Only supported with qemu.</p>
 <p><em>Type:</em>
 null or string</p>
 <p><em>Default:</em>
 <code>null</code></p>
 <p><em>Declared by:</em></p>
 <ul>
-<li><a href="file:///nix/store/rn3gyjyc6x7z6wb9nkwjwwnsdsh7j3zc-source/nixos-modules/microvm/options.nix">/nix/store/rn3gyjyc6x7z6wb9nkwjwwnsdsh7j3zc-source/nixos-modules/microvm/options.nix</a></li>
+<li><a href="https://github.com/astro/microvm.nix/tree/main/nixos-modules/microvm/options.nix">microvm.nix/nixos-modules/microvm/options.nix</a></li>
 </ul>
 <h2 id="microvmcrosvmextraargs"><a class="header" href="#microvmcrosvmextraargs">microvm.crosvm.extraArgs</a></h2>
 <p>Extra arguments to pass to crosvm.</p>
@@ -556,7 +573,7 @@ list of string</p>
 <code>[ ]</code></p>
 <p><em>Declared by:</em></p>
 <ul>
-<li><a href="file:///nix/store/rn3gyjyc6x7z6wb9nkwjwwnsdsh7j3zc-source/nixos-modules/microvm/options.nix">/nix/store/rn3gyjyc6x7z6wb9nkwjwwnsdsh7j3zc-source/nixos-modules/microvm/options.nix</a></li>
+<li><a href="https://github.com/astro/microvm.nix/tree/main/nixos-modules/microvm/options.nix">microvm.nix/nixos-modules/microvm/options.nix</a></li>
 </ul>
 <h2 id="microvmcrosvmpivotroot"><a class="header" href="#microvmcrosvmpivotroot">microvm.crosvm.pivotRoot</a></h2>
 <p>A Hypervisor’s sandbox directory</p>
@@ -566,17 +583,27 @@ null or string</p>
 <code>null</code></p>
 <p><em>Declared by:</em></p>
 <ul>
-<li><a href="file:///nix/store/rn3gyjyc6x7z6wb9nkwjwwnsdsh7j3zc-source/nixos-modules/microvm/options.nix">/nix/store/rn3gyjyc6x7z6wb9nkwjwwnsdsh7j3zc-source/nixos-modules/microvm/options.nix</a></li>
+<li><a href="https://github.com/astro/microvm.nix/tree/main/nixos-modules/microvm/options.nix">microvm.nix/nixos-modules/microvm/options.nix</a></li>
 </ul>
 <h2 id="microvmdeclaredrunner"><a class="header" href="#microvmdeclaredrunner">microvm.declaredRunner</a></h2>
 <p>Generated Hypervisor declared by <code>config.microvm.hypervisor</code></p>
 <p><em>Type:</em>
 package</p>
 <p><em>Default:</em>
-<code>&quot;config.microvm.runner.${config.microvm.hypervisor}&quot;</code></p>
+<code>"config.microvm.runner.${config.microvm.hypervisor}"</code></p>
 <p><em>Declared by:</em></p>
 <ul>
-<li><a href="file:///nix/store/rn3gyjyc6x7z6wb9nkwjwwnsdsh7j3zc-source/nixos-modules/microvm/options.nix">/nix/store/rn3gyjyc6x7z6wb9nkwjwwnsdsh7j3zc-source/nixos-modules/microvm/options.nix</a></li>
+<li><a href="https://github.com/astro/microvm.nix/tree/main/nixos-modules/microvm/options.nix">microvm.nix/nixos-modules/microvm/options.nix</a></li>
+</ul>
+<h2 id="microvmdeflateonoom"><a class="header" href="#microvmdeflateonoom">microvm.deflateOnOOM</a></h2>
+<p>Whether to enable automatic balloon deflation on out-of-memory.</p>
+<p><em>Type:</em>
+boolean</p>
+<p><em>Default:</em>
+<code>true</code></p>
+<p><em>Declared by:</em></p>
+<ul>
+<li><a href="https://github.com/astro/microvm.nix/tree/main/nixos-modules/microvm/options.nix">microvm.nix/nixos-modules/microvm/options.nix</a></li>
 </ul>
 <h2 id="microvmdevices"><a class="header" href="#microvmdevices">microvm.devices</a></h2>
 <p>PCI/USB devices that are passed from the host to the MicroVM</p>
@@ -586,20 +613,22 @@ list of (submodule)</p>
 <code>[ ]</code></p>
 <p><em>Example:</em></p>
 <pre><code>[ {
-        bus = &quot;pci&quot;;
-        path = &quot;0000:01:00.0&quot;;
-      } {
-        bus = &quot;pci&quot;;
-        path = &quot;0000:01:01.0&quot;;
-      } {
-        # QEMU only
-        bus = &quot;usb&quot;;
-        path = &quot;vendorid=0xabcd,productid=0x0123&quot;;
-      } ]
+  bus = "pci";
+  path = "0000:01:00.0";
+} {
+  bus = "pci";
+  path = "0000:01:01.0";
+  deviceExtraArgs = "id=hostId,x-igd-opregion=on";
+} {
+  # QEMU only
+  bus = "usb";
+  path = "vendorid=0xabcd,productid=0x0123";
+} ]
+
 </code></pre>
 <p><em>Declared by:</em></p>
 <ul>
-<li><a href="file:///nix/store/rn3gyjyc6x7z6wb9nkwjwwnsdsh7j3zc-source/nixos-modules/microvm/options.nix">/nix/store/rn3gyjyc6x7z6wb9nkwjwwnsdsh7j3zc-source/nixos-modules/microvm/options.nix</a></li>
+<li><a href="https://github.com/astro/microvm.nix/tree/main/nixos-modules/microvm/options.nix">microvm.nix/nixos-modules/microvm/options.nix</a></li>
 </ul>
 <h2 id="microvmdevicesbus"><a class="header" href="#microvmdevicesbus">microvm.devices.*.bus</a></h2>
 <p>Device is either on the <code>pci</code> or the <code>usb</code> bus</p>
@@ -607,7 +636,7 @@ list of (submodule)</p>
 one of “pci”, “usb”</p>
 <p><em>Declared by:</em></p>
 <ul>
-<li><a href="file:///nix/store/rn3gyjyc6x7z6wb9nkwjwwnsdsh7j3zc-source/nixos-modules/microvm/options.nix">/nix/store/rn3gyjyc6x7z6wb9nkwjwwnsdsh7j3zc-source/nixos-modules/microvm/options.nix</a></li>
+<li><a href="https://github.com/astro/microvm.nix/tree/main/nixos-modules/microvm/options.nix">microvm.nix/nixos-modules/microvm/options.nix</a></li>
 </ul>
 <h2 id="microvmdevicespath"><a class="header" href="#microvmdevicespath">microvm.devices.*.path</a></h2>
 <p>Identification of the device on its bus</p>
@@ -615,36 +644,44 @@ one of “pci”, “usb”</p>
 string</p>
 <p><em>Declared by:</em></p>
 <ul>
-<li><a href="file:///nix/store/rn3gyjyc6x7z6wb9nkwjwwnsdsh7j3zc-source/nixos-modules/microvm/options.nix">/nix/store/rn3gyjyc6x7z6wb9nkwjwwnsdsh7j3zc-source/nixos-modules/microvm/options.nix</a></li>
+<li><a href="https://github.com/astro/microvm.nix/tree/main/nixos-modules/microvm/options.nix">microvm.nix/nixos-modules/microvm/options.nix</a></li>
+</ul>
+<h2 id="microvmdevicesqemudeviceextraargs"><a class="header" href="#microvmdevicesqemudeviceextraargs">microvm.devices.*.qemu.deviceExtraArgs</a></h2>
+<p>Device additional arguments (optional)</p>
+<p><em>Type:</em>
+null or string</p>
+<p><em>Default:</em>
+<code>null</code></p>
+<p><em>Declared by:</em></p>
+<ul>
+<li><a href="https://github.com/astro/microvm.nix/tree/main/nixos-modules/microvm/options.nix">microvm.nix/nixos-modules/microvm/options.nix</a></li>
 </ul>
 <h2 id="microvmforwardports"><a class="header" href="#microvmforwardports">microvm.forwardPorts</a></h2>
 <p>When using the SLiRP user networking (default), this option allows to
 forward ports to/from the host/guest.</p>
-<p>&lt;warning&gt;&lt;para&gt;
-If the NixOS firewall on the virtual machine is enabled, you also
-have to open the guest ports to enable the traffic between host and
-guest.
-&lt;/para&gt;&lt;/warning&gt;</p>
-<p>&lt;note&gt;&lt;para&gt;Currently QEMU supports only IPv4 forwarding.&lt;/para&gt;&lt;/note&gt;</p>
+<p><strong>Warning:</strong> If the NixOS firewall on the virtual machine is enabled, you
+also have to open the guest ports to enable the traffic
+between host and guest.</p>
+<p><strong>Note:</strong> Currently QEMU supports only IPv4 forwarding.</p>
 <p><em>Type:</em>
 list of (submodule)</p>
 <p><em>Default:</em>
 <code>[ ]</code></p>
 <p><em>Example:</em></p>
 <pre><code>[ # forward local port 2222 -&gt; 22, to ssh into the VM
-  { from = &quot;host&quot;; host.port = 2222; guest.port = 22; }
+  { from = "host"; host.port = 2222; guest.port = 22; }
 
   # forward local port 80 -&gt; 10.0.2.10:80 in the VLAN
-  { from = &quot;guest&quot;;
-    guest.address = &quot;10.0.2.10&quot;; guest.port = 80;
-    host.address = &quot;127.0.0.1&quot;; host.port = 80;
+  { from = "guest";
+    guest.address = "10.0.2.10"; guest.port = 80;
+    host.address = "127.0.0.1"; host.port = 80;
   }
 ]
 
 </code></pre>
 <p><em>Declared by:</em></p>
 <ul>
-<li><a href="file:///nix/store/rn3gyjyc6x7z6wb9nkwjwwnsdsh7j3zc-source/nixos-modules/microvm/options.nix">/nix/store/rn3gyjyc6x7z6wb9nkwjwwnsdsh7j3zc-source/nixos-modules/microvm/options.nix</a></li>
+<li><a href="https://github.com/astro/microvm.nix/tree/main/nixos-modules/microvm/options.nix">microvm.nix/nixos-modules/microvm/options.nix</a></li>
 </ul>
 <h2 id="microvmforwardportsfrom"><a class="header" href="#microvmforwardportsfrom">microvm.forwardPorts.*.from</a></h2>
 <p>Controls the direction in which the ports are mapped:</p>
@@ -661,20 +698,20 @@ is forwarded to the given host port.</p>
 <p><em>Type:</em>
 one of “host”, “guest”</p>
 <p><em>Default:</em>
-<code>&quot;host&quot;</code></p>
+<code>"host"</code></p>
 <p><em>Declared by:</em></p>
 <ul>
-<li><a href="file:///nix/store/rn3gyjyc6x7z6wb9nkwjwwnsdsh7j3zc-source/nixos-modules/microvm/options.nix">/nix/store/rn3gyjyc6x7z6wb9nkwjwwnsdsh7j3zc-source/nixos-modules/microvm/options.nix</a></li>
+<li><a href="https://github.com/astro/microvm.nix/tree/main/nixos-modules/microvm/options.nix">microvm.nix/nixos-modules/microvm/options.nix</a></li>
 </ul>
 <h2 id="microvmforwardportsguestaddress"><a class="header" href="#microvmforwardportsguestaddress">microvm.forwardPorts.*.guest.address</a></h2>
 <p>The IPv4 address on the guest VLAN.</p>
 <p><em>Type:</em>
 string</p>
 <p><em>Default:</em>
-<code>&quot;&quot;</code></p>
+<code>""</code></p>
 <p><em>Declared by:</em></p>
 <ul>
-<li><a href="file:///nix/store/rn3gyjyc6x7z6wb9nkwjwwnsdsh7j3zc-source/nixos-modules/microvm/options.nix">/nix/store/rn3gyjyc6x7z6wb9nkwjwwnsdsh7j3zc-source/nixos-modules/microvm/options.nix</a></li>
+<li><a href="https://github.com/astro/microvm.nix/tree/main/nixos-modules/microvm/options.nix">microvm.nix/nixos-modules/microvm/options.nix</a></li>
 </ul>
 <h2 id="microvmforwardportsguestport"><a class="header" href="#microvmforwardportsguestport">microvm.forwardPorts.*.guest.port</a></h2>
 <p>The guest port to be mapped.</p>
@@ -682,17 +719,17 @@ string</p>
 16 bit unsigned integer; between 0 and 65535 (both inclusive)</p>
 <p><em>Declared by:</em></p>
 <ul>
-<li><a href="file:///nix/store/rn3gyjyc6x7z6wb9nkwjwwnsdsh7j3zc-source/nixos-modules/microvm/options.nix">/nix/store/rn3gyjyc6x7z6wb9nkwjwwnsdsh7j3zc-source/nixos-modules/microvm/options.nix</a></li>
+<li><a href="https://github.com/astro/microvm.nix/tree/main/nixos-modules/microvm/options.nix">microvm.nix/nixos-modules/microvm/options.nix</a></li>
 </ul>
 <h2 id="microvmforwardportshostaddress"><a class="header" href="#microvmforwardportshostaddress">microvm.forwardPorts.*.host.address</a></h2>
 <p>The IPv4 address of the host.</p>
 <p><em>Type:</em>
 string</p>
 <p><em>Default:</em>
-<code>&quot;&quot;</code></p>
+<code>""</code></p>
 <p><em>Declared by:</em></p>
 <ul>
-<li><a href="file:///nix/store/rn3gyjyc6x7z6wb9nkwjwwnsdsh7j3zc-source/nixos-modules/microvm/options.nix">/nix/store/rn3gyjyc6x7z6wb9nkwjwwnsdsh7j3zc-source/nixos-modules/microvm/options.nix</a></li>
+<li><a href="https://github.com/astro/microvm.nix/tree/main/nixos-modules/microvm/options.nix">microvm.nix/nixos-modules/microvm/options.nix</a></li>
 </ul>
 <h2 id="microvmforwardportshostport"><a class="header" href="#microvmforwardportshostport">microvm.forwardPorts.*.host.port</a></h2>
 <p>The host port to be mapped.</p>
@@ -700,17 +737,17 @@ string</p>
 16 bit unsigned integer; between 0 and 65535 (both inclusive)</p>
 <p><em>Declared by:</em></p>
 <ul>
-<li><a href="file:///nix/store/rn3gyjyc6x7z6wb9nkwjwwnsdsh7j3zc-source/nixos-modules/microvm/options.nix">/nix/store/rn3gyjyc6x7z6wb9nkwjwwnsdsh7j3zc-source/nixos-modules/microvm/options.nix</a></li>
+<li><a href="https://github.com/astro/microvm.nix/tree/main/nixos-modules/microvm/options.nix">microvm.nix/nixos-modules/microvm/options.nix</a></li>
 </ul>
 <h2 id="microvmforwardportsproto"><a class="header" href="#microvmforwardportsproto">microvm.forwardPorts.*.proto</a></h2>
 <p>The protocol to forward.</p>
 <p><em>Type:</em>
 one of “tcp”, “udp”</p>
 <p><em>Default:</em>
-<code>&quot;tcp&quot;</code></p>
+<code>"tcp"</code></p>
 <p><em>Declared by:</em></p>
 <ul>
-<li><a href="file:///nix/store/rn3gyjyc6x7z6wb9nkwjwwnsdsh7j3zc-source/nixos-modules/microvm/options.nix">/nix/store/rn3gyjyc6x7z6wb9nkwjwwnsdsh7j3zc-source/nixos-modules/microvm/options.nix</a></li>
+<li><a href="https://github.com/astro/microvm.nix/tree/main/nixos-modules/microvm/options.nix">microvm.nix/nixos-modules/microvm/options.nix</a></li>
 </ul>
 <h2 id="microvmgraphicsenable"><a class="header" href="#microvmgraphicsenable">microvm.graphics.enable</a></h2>
 <p>Enable GUI support.</p>
@@ -726,17 +763,17 @@ boolean</p>
 <code>false</code></p>
 <p><em>Declared by:</em></p>
 <ul>
-<li><a href="file:///nix/store/rn3gyjyc6x7z6wb9nkwjwwnsdsh7j3zc-source/nixos-modules/microvm/options.nix">/nix/store/rn3gyjyc6x7z6wb9nkwjwwnsdsh7j3zc-source/nixos-modules/microvm/options.nix</a></li>
+<li><a href="https://github.com/astro/microvm.nix/tree/main/nixos-modules/microvm/options.nix">microvm.nix/nixos-modules/microvm/options.nix</a></li>
 </ul>
 <h2 id="microvmgraphicssocket"><a class="header" href="#microvmgraphicssocket">microvm.graphics.socket</a></h2>
 <p>Path of vhost-user socket</p>
 <p><em>Type:</em>
 string</p>
 <p><em>Default:</em>
-<code>&quot;$HOSTNAME-gpu.sock&quot;</code></p>
+<code>"$HOSTNAME-gpu.sock"</code></p>
 <p><em>Declared by:</em></p>
 <ul>
-<li><a href="file:///nix/store/rn3gyjyc6x7z6wb9nkwjwwnsdsh7j3zc-source/nixos-modules/microvm/options.nix">/nix/store/rn3gyjyc6x7z6wb9nkwjwwnsdsh7j3zc-source/nixos-modules/microvm/options.nix</a></li>
+<li><a href="https://github.com/astro/microvm.nix/tree/main/nixos-modules/microvm/options.nix">microvm.nix/nixos-modules/microvm/options.nix</a></li>
 </ul>
 <h2 id="microvmguestenable"><a class="header" href="#microvmguestenable">microvm.guest.enable</a></h2>
 <p>Whether to enable the microvm.nix guest module at all.</p>
@@ -746,7 +783,29 @@ boolean</p>
 <code>true</code></p>
 <p><em>Declared by:</em></p>
 <ul>
-<li><a href="file:///nix/store/rn3gyjyc6x7z6wb9nkwjwwnsdsh7j3zc-source/nixos-modules/microvm/options.nix">/nix/store/rn3gyjyc6x7z6wb9nkwjwwnsdsh7j3zc-source/nixos-modules/microvm/options.nix</a></li>
+<li><a href="https://github.com/astro/microvm.nix/tree/main/nixos-modules/microvm/options.nix">microvm.nix/nixos-modules/microvm/options.nix</a></li>
+</ul>
+<h2 id="microvmhotplugmem"><a class="header" href="#microvmhotplugmem">microvm.hotplugMem</a></h2>
+<p>Amount of hotplug memory in megabytes.</p>
+<p>This describes the maximum amount of memory that can be dynamically added to the VM with virtio-mem.</p>
+<p><em>Type:</em>
+unsigned integer, meaning &gt;=0</p>
+<p><em>Default:</em>
+<code>0</code></p>
+<p><em>Declared by:</em></p>
+<ul>
+<li><a href="https://github.com/astro/microvm.nix/tree/main/nixos-modules/microvm/options.nix">microvm.nix/nixos-modules/microvm/options.nix</a></li>
+</ul>
+<h2 id="microvmhotpluggedmem"><a class="header" href="#microvmhotpluggedmem">microvm.hotpluggedMem</a></h2>
+<p>Amount of hotplugged memory in megabytes.</p>
+<p>This basically describes the amount of hotplug memory the VM starts with.</p>
+<p><em>Type:</em>
+unsigned integer, meaning &gt;=0</p>
+<p><em>Default:</em>
+<code>0</code></p>
+<p><em>Declared by:</em></p>
+<ul>
+<li><a href="https://github.com/astro/microvm.nix/tree/main/nixos-modules/microvm/options.nix">microvm.nix/nixos-modules/microvm/options.nix</a></li>
 </ul>
 <h2 id="microvmhugepagemem"><a class="header" href="#microvmhugepagemem">microvm.hugepageMem</a></h2>
 <p>Whether to use hugepages as memory backend.
@@ -757,28 +816,38 @@ boolean</p>
 <code>false</code></p>
 <p><em>Declared by:</em></p>
 <ul>
-<li><a href="file:///nix/store/rn3gyjyc6x7z6wb9nkwjwwnsdsh7j3zc-source/nixos-modules/microvm/options.nix">/nix/store/rn3gyjyc6x7z6wb9nkwjwwnsdsh7j3zc-source/nixos-modules/microvm/options.nix</a></li>
+<li><a href="https://github.com/astro/microvm.nix/tree/main/nixos-modules/microvm/options.nix">microvm.nix/nixos-modules/microvm/options.nix</a></li>
 </ul>
 <h2 id="microvmhypervisor"><a class="header" href="#microvmhypervisor">microvm.hypervisor</a></h2>
 <p>Which hypervisor to use for this MicroVM</p>
-<p>Choose one of: qemu, cloud-hypervisor, firecracker, crosvm, kvmtool, stratovirt</p>
+<p>Choose one of: qemu, cloud-hypervisor, firecracker, crosvm, kvmtool, stratovirt, alioth</p>
 <p><em>Type:</em>
-one of “qemu”, “cloud-hypervisor”, “firecracker”, “crosvm”, “kvmtool”, “stratovirt”</p>
+one of “qemu”, “cloud-hypervisor”, “firecracker”, “crosvm”, “kvmtool”, “stratovirt”, “alioth”</p>
 <p><em>Default:</em>
-<code>&quot;qemu&quot;</code></p>
+<code>"qemu"</code></p>
 <p><em>Declared by:</em></p>
 <ul>
-<li><a href="file:///nix/store/rn3gyjyc6x7z6wb9nkwjwwnsdsh7j3zc-source/nixos-modules/microvm/options.nix">/nix/store/rn3gyjyc6x7z6wb9nkwjwwnsdsh7j3zc-source/nixos-modules/microvm/options.nix</a></li>
+<li><a href="https://github.com/astro/microvm.nix/tree/main/nixos-modules/microvm/options.nix">microvm.nix/nixos-modules/microvm/options.nix</a></li>
+</ul>
+<h2 id="microvminitialballoonmem"><a class="header" href="#microvminitialballoonmem">microvm.initialBalloonMem</a></h2>
+<p>Amount of initial balloon memory in megabytes.</p>
+<p><em>Type:</em>
+unsigned integer, meaning &gt;=0</p>
+<p><em>Default:</em>
+<code>0</code></p>
+<p><em>Declared by:</em></p>
+<ul>
+<li><a href="https://github.com/astro/microvm.nix/tree/main/nixos-modules/microvm/options.nix">microvm.nix/nixos-modules/microvm/options.nix</a></li>
 </ul>
 <h2 id="microvminitrdpath"><a class="header" href="#microvminitrdpath">microvm.initrdPath</a></h2>
 <p>Path to the initrd file in the initrd package</p>
 <p><em>Type:</em>
-path</p>
+absolute path</p>
 <p><em>Default:</em>
-<code>&quot;${config.system.build.initialRamdisk}/${config.system.boot.loader.initrdFile}&quot;</code></p>
+<code>"${config.system.build.initialRamdisk}/${config.system.boot.loader.initrdFile}"</code></p>
 <p><em>Declared by:</em></p>
 <ul>
-<li><a href="file:///nix/store/rn3gyjyc6x7z6wb9nkwjwwnsdsh7j3zc-source/nixos-modules/microvm/options.nix">/nix/store/rn3gyjyc6x7z6wb9nkwjwwnsdsh7j3zc-source/nixos-modules/microvm/options.nix</a></li>
+<li><a href="https://github.com/astro/microvm.nix/tree/main/nixos-modules/microvm/options.nix">microvm.nix/nixos-modules/microvm/options.nix</a></li>
 </ul>
 <h2 id="microvminterfaces"><a class="header" href="#microvminterfaces">microvm.interfaces</a></h2>
 <p>Network interfaces</p>
@@ -788,7 +857,7 @@ list of (submodule)</p>
 <code>[ ]</code></p>
 <p><em>Declared by:</em></p>
 <ul>
-<li><a href="file:///nix/store/rn3gyjyc6x7z6wb9nkwjwwnsdsh7j3zc-source/nixos-modules/microvm/options.nix">/nix/store/rn3gyjyc6x7z6wb9nkwjwwnsdsh7j3zc-source/nixos-modules/microvm/options.nix</a></li>
+<li><a href="https://github.com/astro/microvm.nix/tree/main/nixos-modules/microvm/options.nix">microvm.nix/nixos-modules/microvm/options.nix</a></li>
 </ul>
 <h2 id="microvminterfacesbridge"><a class="header" href="#microvminterfacesbridge">microvm.interfaces.*.bridge</a></h2>
 <p>Attach network interface to host bridge interface for type = “bridge”</p>
@@ -798,7 +867,7 @@ null or string</p>
 <code>null</code></p>
 <p><em>Declared by:</em></p>
 <ul>
-<li><a href="file:///nix/store/rn3gyjyc6x7z6wb9nkwjwwnsdsh7j3zc-source/nixos-modules/microvm/options.nix">/nix/store/rn3gyjyc6x7z6wb9nkwjwwnsdsh7j3zc-source/nixos-modules/microvm/options.nix</a></li>
+<li><a href="https://github.com/astro/microvm.nix/tree/main/nixos-modules/microvm/options.nix">microvm.nix/nixos-modules/microvm/options.nix</a></li>
 </ul>
 <h2 id="microvminterfacesid"><a class="header" href="#microvminterfacesid">microvm.interfaces.*.id</a></h2>
 <p>Interface name on the host</p>
@@ -806,7 +875,7 @@ null or string</p>
 string</p>
 <p><em>Declared by:</em></p>
 <ul>
-<li><a href="file:///nix/store/rn3gyjyc6x7z6wb9nkwjwwnsdsh7j3zc-source/nixos-modules/microvm/options.nix">/nix/store/rn3gyjyc6x7z6wb9nkwjwwnsdsh7j3zc-source/nixos-modules/microvm/options.nix</a></li>
+<li><a href="https://github.com/astro/microvm.nix/tree/main/nixos-modules/microvm/options.nix">microvm.nix/nixos-modules/microvm/options.nix</a></li>
 </ul>
 <h2 id="microvminterfacesmac"><a class="header" href="#microvminterfacesmac">microvm.interfaces.*.mac</a></h2>
 <p>MAC address of the guest’s network interface</p>
@@ -814,27 +883,23 @@ string</p>
 string</p>
 <p><em>Declared by:</em></p>
 <ul>
-<li><a href="file:///nix/store/rn3gyjyc6x7z6wb9nkwjwwnsdsh7j3zc-source/nixos-modules/microvm/options.nix">/nix/store/rn3gyjyc6x7z6wb9nkwjwwnsdsh7j3zc-source/nixos-modules/microvm/options.nix</a></li>
+<li><a href="https://github.com/astro/microvm.nix/tree/main/nixos-modules/microvm/options.nix">microvm.nix/nixos-modules/microvm/options.nix</a></li>
 </ul>
 <h2 id="microvminterfacesmacvtaplink"><a class="header" href="#microvminterfacesmacvtaplink">microvm.interfaces.*.macvtap.link</a></h2>
 <p>Attach network interface to host interface for type = “macvlan”</p>
 <p><em>Type:</em>
-null or string</p>
-<p><em>Default:</em>
-<code>null</code></p>
+string</p>
 <p><em>Declared by:</em></p>
 <ul>
-<li><a href="file:///nix/store/rn3gyjyc6x7z6wb9nkwjwwnsdsh7j3zc-source/nixos-modules/microvm/options.nix">/nix/store/rn3gyjyc6x7z6wb9nkwjwwnsdsh7j3zc-source/nixos-modules/microvm/options.nix</a></li>
+<li><a href="https://github.com/astro/microvm.nix/tree/main/nixos-modules/microvm/options.nix">microvm.nix/nixos-modules/microvm/options.nix</a></li>
 </ul>
 <h2 id="microvminterfacesmacvtapmode"><a class="header" href="#microvminterfacesmacvtapmode">microvm.interfaces.*.macvtap.mode</a></h2>
 <p>The MACVLAN mode to use</p>
 <p><em>Type:</em>
-null or one of “private”, “vepa”, “bridge”, “passthru”, “source”</p>
-<p><em>Default:</em>
-<code>null</code></p>
+one of “private”, “vepa”, “bridge”, “passthru”, “source”</p>
 <p><em>Declared by:</em></p>
 <ul>
-<li><a href="file:///nix/store/rn3gyjyc6x7z6wb9nkwjwwnsdsh7j3zc-source/nixos-modules/microvm/options.nix">/nix/store/rn3gyjyc6x7z6wb9nkwjwwnsdsh7j3zc-source/nixos-modules/microvm/options.nix</a></li>
+<li><a href="https://github.com/astro/microvm.nix/tree/main/nixos-modules/microvm/options.nix">microvm.nix/nixos-modules/microvm/options.nix</a></li>
 </ul>
 <h2 id="microvminterfacestype"><a class="header" href="#microvminterfacestype">microvm.interfaces.*.type</a></h2>
 <p>Interface type</p>
@@ -842,17 +907,17 @@ null or one of “private”, “vepa”, “bridge”, “passthru”, “sourc
 one of “user”, “tap”, “macvtap”, “bridge”</p>
 <p><em>Declared by:</em></p>
 <ul>
-<li><a href="file:///nix/store/rn3gyjyc6x7z6wb9nkwjwwnsdsh7j3zc-source/nixos-modules/microvm/options.nix">/nix/store/rn3gyjyc6x7z6wb9nkwjwwnsdsh7j3zc-source/nixos-modules/microvm/options.nix</a></li>
+<li><a href="https://github.com/astro/microvm.nix/tree/main/nixos-modules/microvm/options.nix">microvm.nix/nixos-modules/microvm/options.nix</a></li>
 </ul>
 <h2 id="microvmkernel"><a class="header" href="#microvmkernel">microvm.kernel</a></h2>
-<p>Kernel package to use for MicroVM runners</p>
+<p>Kernel package to use for MicroVM runners. Better set <code>boot.kernelPackages</code> instead.</p>
 <p><em>Type:</em>
 package</p>
 <p><em>Default:</em>
-<code>&quot;${config.boot.kernelPackages.kernel}&quot;</code></p>
+<code>"${config.boot.kernelPackages.kernel}"</code></p>
 <p><em>Declared by:</em></p>
 <ul>
-<li><a href="file:///nix/store/rn3gyjyc6x7z6wb9nkwjwwnsdsh7j3zc-source/nixos-modules/microvm/options.nix">/nix/store/rn3gyjyc6x7z6wb9nkwjwwnsdsh7j3zc-source/nixos-modules/microvm/options.nix</a></li>
+<li><a href="https://github.com/astro/microvm.nix/tree/main/nixos-modules/microvm/options.nix">microvm.nix/nixos-modules/microvm/options.nix</a></li>
 </ul>
 <h2 id="microvmkernelparams"><a class="header" href="#microvmkernelparams">microvm.kernelParams</a></h2>
 <p>Includes boot.kernelParams but doesn’t end up in toplevel, thereby allowing references to toplevel</p>
@@ -860,27 +925,46 @@ package</p>
 list of string</p>
 <p><em>Declared by:</em></p>
 <ul>
-<li><a href="file:///nix/store/rn3gyjyc6x7z6wb9nkwjwwnsdsh7j3zc-source/nixos-modules/microvm/options.nix">/nix/store/rn3gyjyc6x7z6wb9nkwjwwnsdsh7j3zc-source/nixos-modules/microvm/options.nix</a></li>
+<li><a href="https://github.com/astro/microvm.nix/tree/main/nixos-modules/microvm/options.nix">microvm.nix/nixos-modules/microvm/options.nix</a></li>
 </ul>
 <h2 id="microvmmem"><a class="header" href="#microvmmem">microvm.mem</a></h2>
 <p>Amount of RAM in megabytes</p>
 <p><em>Type:</em>
-signed integer</p>
+positive integer, meaning &gt;0</p>
 <p><em>Default:</em>
 <code>512</code></p>
 <p><em>Declared by:</em></p>
 <ul>
-<li><a href="file:///nix/store/rn3gyjyc6x7z6wb9nkwjwwnsdsh7j3zc-source/nixos-modules/microvm/options.nix">/nix/store/rn3gyjyc6x7z6wb9nkwjwwnsdsh7j3zc-source/nixos-modules/microvm/options.nix</a></li>
+<li><a href="https://github.com/astro/microvm.nix/tree/main/nixos-modules/microvm/options.nix">microvm.nix/nixos-modules/microvm/options.nix</a></li>
+</ul>
+<h2 id="microvmoptimizeenable"><a class="header" href="#microvmoptimizeenable">microvm.optimize.enable</a></h2>
+<p>Enables some optimizations by default to closure size and startup time:</p>
+<ul>
+<li>defaults documentation to off</li>
+<li>defaults to using systemd in initrd</li>
+<li>use systemd-networkd</li>
+<li>disables systemd-network-wait-online</li>
+<li>disables NixOS system switching if the host store is not mounted</li>
+</ul>
+<p>This takes a few hundred MB off the closure size, including qemu,
+allowing for putting MicroVMs inside Docker containers.</p>
+<p><em>Type:</em>
+boolean</p>
+<p><em>Default:</em>
+<code>true</code></p>
+<p><em>Declared by:</em></p>
+<ul>
+<li><a href="https://github.com/astro/microvm.nix/tree/main/nixos-modules/microvm/options.nix">microvm.nix/nixos-modules/microvm/options.nix</a></li>
 </ul>
 <h2 id="microvmprestart"><a class="header" href="#microvmprestart">microvm.preStart</a></h2>
 <p>Commands to run before starting the hypervisor</p>
 <p><em>Type:</em>
 strings concatenated with “\n”</p>
 <p><em>Default:</em>
-<code>&quot;&quot;</code></p>
+<code>""</code></p>
 <p><em>Declared by:</em></p>
 <ul>
-<li><a href="file:///nix/store/rn3gyjyc6x7z6wb9nkwjwwnsdsh7j3zc-source/nixos-modules/microvm/options.nix">/nix/store/rn3gyjyc6x7z6wb9nkwjwwnsdsh7j3zc-source/nixos-modules/microvm/options.nix</a></li>
+<li><a href="https://github.com/astro/microvm.nix/tree/main/nixos-modules/microvm/options.nix">microvm.nix/nixos-modules/microvm/options.nix</a></li>
 </ul>
 <h2 id="microvmprettyprocnames"><a class="header" href="#microvmprettyprocnames">microvm.prettyProcnames</a></h2>
 <p>Set a recognizable process name right before executing the Hyperisor.</p>
@@ -890,7 +974,7 @@ boolean</p>
 <code>true</code></p>
 <p><em>Declared by:</em></p>
 <ul>
-<li><a href="file:///nix/store/rn3gyjyc6x7z6wb9nkwjwwnsdsh7j3zc-source/nixos-modules/microvm/options.nix">/nix/store/rn3gyjyc6x7z6wb9nkwjwwnsdsh7j3zc-source/nixos-modules/microvm/options.nix</a></li>
+<li><a href="https://github.com/astro/microvm.nix/tree/main/nixos-modules/microvm/options.nix">microvm.nix/nixos-modules/microvm/options.nix</a></li>
 </ul>
 <h2 id="microvmqemuextraargs"><a class="header" href="#microvmqemuextraargs">microvm.qemu.extraArgs</a></h2>
 <p>Extra arguments to pass to qemu.</p>
@@ -900,7 +984,28 @@ list of string</p>
 <code>[ ]</code></p>
 <p><em>Declared by:</em></p>
 <ul>
-<li><a href="file:///nix/store/rn3gyjyc6x7z6wb9nkwjwwnsdsh7j3zc-source/nixos-modules/microvm/options.nix">/nix/store/rn3gyjyc6x7z6wb9nkwjwwnsdsh7j3zc-source/nixos-modules/microvm/options.nix</a></li>
+<li><a href="https://github.com/astro/microvm.nix/tree/main/nixos-modules/microvm/options.nix">microvm.nix/nixos-modules/microvm/options.nix</a></li>
+</ul>
+<h2 id="microvmqemumachine"><a class="header" href="#microvmqemumachine">microvm.qemu.machine</a></h2>
+<p>QEMU machine model, eg. <code>microvm</code>, or <code>q35</code></p>
+<p>Get a full list with <code>qemu-system-x86_64 -M help</code></p>
+<p>This has a default declared with <code>lib.mkDefault</code> because it
+depends on ${pkgs.system}.</p>
+<p><em>Type:</em>
+string</p>
+<p><em>Declared by:</em></p>
+<ul>
+<li><a href="https://github.com/astro/microvm.nix/tree/main/nixos-modules/microvm/options.nix">microvm.nix/nixos-modules/microvm/options.nix</a></li>
+</ul>
+<h2 id="microvmqemumachineopts"><a class="header" href="#microvmqemumachineopts">microvm.qemu.machineOpts</a></h2>
+<p>Overwrite the default machine model options.</p>
+<p><em>Type:</em>
+null or (attribute set of string)</p>
+<p><em>Default:</em>
+<code>null</code></p>
+<p><em>Declared by:</em></p>
+<ul>
+<li><a href="https://github.com/astro/microvm.nix/tree/main/nixos-modules/microvm/options.nix">microvm.nix/nixos-modules/microvm/options.nix</a></li>
 </ul>
 <h2 id="microvmqemuserialconsole"><a class="header" href="#microvmqemuserialconsole">microvm.qemu.serialConsole</a></h2>
 <p>Whether to enable the virtual serial console on qemu.</p>
@@ -910,7 +1015,7 @@ boolean</p>
 <code>true</code></p>
 <p><em>Declared by:</em></p>
 <ul>
-<li><a href="file:///nix/store/rn3gyjyc6x7z6wb9nkwjwwnsdsh7j3zc-source/nixos-modules/microvm/options.nix">/nix/store/rn3gyjyc6x7z6wb9nkwjwwnsdsh7j3zc-source/nixos-modules/microvm/options.nix</a></li>
+<li><a href="https://github.com/astro/microvm.nix/tree/main/nixos-modules/microvm/options.nix">microvm.nix/nixos-modules/microvm/options.nix</a></li>
 </ul>
 <h2 id="microvmrunner"><a class="header" href="#microvmrunner">microvm.runner</a></h2>
 <p>Generated Hypervisor runner for this NixOS</p>
@@ -918,7 +1023,7 @@ boolean</p>
 attribute set of package</p>
 <p><em>Declared by:</em></p>
 <ul>
-<li><a href="file:///nix/store/rn3gyjyc6x7z6wb9nkwjwwnsdsh7j3zc-source/nixos-modules/microvm/options.nix">/nix/store/rn3gyjyc6x7z6wb9nkwjwwnsdsh7j3zc-source/nixos-modules/microvm/options.nix</a></li>
+<li><a href="https://github.com/astro/microvm.nix/tree/main/nixos-modules/microvm/options.nix">microvm.nix/nixos-modules/microvm/options.nix</a></li>
 </ul>
 <h2 id="microvmshares"><a class="header" href="#microvmshares">microvm.shares</a></h2>
 <p>Shared directory trees</p>
@@ -928,25 +1033,35 @@ list of (submodule)</p>
 <code>[ ]</code></p>
 <p><em>Declared by:</em></p>
 <ul>
-<li><a href="file:///nix/store/rn3gyjyc6x7z6wb9nkwjwwnsdsh7j3zc-source/nixos-modules/microvm/options.nix">/nix/store/rn3gyjyc6x7z6wb9nkwjwwnsdsh7j3zc-source/nixos-modules/microvm/options.nix</a></li>
+<li><a href="https://github.com/astro/microvm.nix/tree/main/nixos-modules/microvm/options.nix">microvm.nix/nixos-modules/microvm/options.nix</a></li>
 </ul>
 <h2 id="microvmsharesmountpoint"><a class="header" href="#microvmsharesmountpoint">microvm.shares.*.mountPoint</a></h2>
 <p>Where to mount the share inside the container</p>
 <p><em>Type:</em>
-path</p>
+absolute path</p>
 <p><em>Declared by:</em></p>
 <ul>
-<li><a href="file:///nix/store/rn3gyjyc6x7z6wb9nkwjwwnsdsh7j3zc-source/nixos-modules/microvm/options.nix">/nix/store/rn3gyjyc6x7z6wb9nkwjwwnsdsh7j3zc-source/nixos-modules/microvm/options.nix</a></li>
+<li><a href="https://github.com/astro/microvm.nix/tree/main/nixos-modules/microvm/options.nix">microvm.nix/nixos-modules/microvm/options.nix</a></li>
 </ul>
 <h2 id="microvmsharesproto"><a class="header" href="#microvmsharesproto">microvm.shares.*.proto</a></h2>
 <p>Protocol for this share</p>
 <p><em>Type:</em>
 one of “9p”, “virtiofs”</p>
 <p><em>Default:</em>
-<code>&quot;9p&quot;</code></p>
+<code>"9p"</code></p>
 <p><em>Declared by:</em></p>
 <ul>
-<li><a href="file:///nix/store/rn3gyjyc6x7z6wb9nkwjwwnsdsh7j3zc-source/nixos-modules/microvm/options.nix">/nix/store/rn3gyjyc6x7z6wb9nkwjwwnsdsh7j3zc-source/nixos-modules/microvm/options.nix</a></li>
+<li><a href="https://github.com/astro/microvm.nix/tree/main/nixos-modules/microvm/options.nix">microvm.nix/nixos-modules/microvm/options.nix</a></li>
+</ul>
+<h2 id="microvmsharessecuritymodel"><a class="header" href="#microvmsharessecuritymodel">microvm.shares.*.securityModel</a></h2>
+<p>What security model to use for the shared directory</p>
+<p><em>Type:</em>
+one of “passthrough”, “none”, “mapped”, “mapped-file”</p>
+<p><em>Default:</em>
+<code>"none"</code></p>
+<p><em>Declared by:</em></p>
+<ul>
+<li><a href="https://github.com/astro/microvm.nix/tree/main/nixos-modules/microvm/options.nix">microvm.nix/nixos-modules/microvm/options.nix</a></li>
 </ul>
 <h2 id="microvmsharessocket"><a class="header" href="#microvmsharessocket">microvm.shares.*.socket</a></h2>
 <p>Socket for communication with virtiofs daemon</p>
@@ -956,7 +1071,7 @@ null or string</p>
 <code>null</code></p>
 <p><em>Declared by:</em></p>
 <ul>
-<li><a href="file:///nix/store/rn3gyjyc6x7z6wb9nkwjwwnsdsh7j3zc-source/nixos-modules/microvm/options.nix">/nix/store/rn3gyjyc6x7z6wb9nkwjwwnsdsh7j3zc-source/nixos-modules/microvm/options.nix</a></li>
+<li><a href="https://github.com/astro/microvm.nix/tree/main/nixos-modules/microvm/options.nix">microvm.nix/nixos-modules/microvm/options.nix</a></li>
 </ul>
 <h2 id="microvmsharessource"><a class="header" href="#microvmsharessource">microvm.shares.*.source</a></h2>
 <p>Path to shared directory tree</p>
@@ -964,7 +1079,7 @@ null or string</p>
 non-empty string</p>
 <p><em>Declared by:</em></p>
 <ul>
-<li><a href="file:///nix/store/rn3gyjyc6x7z6wb9nkwjwwnsdsh7j3zc-source/nixos-modules/microvm/options.nix">/nix/store/rn3gyjyc6x7z6wb9nkwjwwnsdsh7j3zc-source/nixos-modules/microvm/options.nix</a></li>
+<li><a href="https://github.com/astro/microvm.nix/tree/main/nixos-modules/microvm/options.nix">microvm.nix/nixos-modules/microvm/options.nix</a></li>
 </ul>
 <h2 id="microvmsharestag"><a class="header" href="#microvmsharestag">microvm.shares.*.tag</a></h2>
 <p>Unique virtiofs daemon tag</p>
@@ -972,17 +1087,60 @@ non-empty string</p>
 string</p>
 <p><em>Declared by:</em></p>
 <ul>
-<li><a href="file:///nix/store/rn3gyjyc6x7z6wb9nkwjwwnsdsh7j3zc-source/nixos-modules/microvm/options.nix">/nix/store/rn3gyjyc6x7z6wb9nkwjwwnsdsh7j3zc-source/nixos-modules/microvm/options.nix</a></li>
+<li><a href="https://github.com/astro/microvm.nix/tree/main/nixos-modules/microvm/options.nix">microvm.nix/nixos-modules/microvm/options.nix</a></li>
 </ul>
 <h2 id="microvmsocket"><a class="header" href="#microvmsocket">microvm.socket</a></h2>
 <p>Hypervisor control socket path</p>
 <p><em>Type:</em>
 null or string</p>
 <p><em>Default:</em>
-<code>&quot;${hostName}.sock&quot;</code></p>
+<code>"${hostName}.sock"</code></p>
 <p><em>Declared by:</em></p>
 <ul>
-<li><a href="file:///nix/store/rn3gyjyc6x7z6wb9nkwjwwnsdsh7j3zc-source/nixos-modules/microvm/options.nix">/nix/store/rn3gyjyc6x7z6wb9nkwjwwnsdsh7j3zc-source/nixos-modules/microvm/options.nix</a></li>
+<li><a href="https://github.com/astro/microvm.nix/tree/main/nixos-modules/microvm/options.nix">microvm.nix/nixos-modules/microvm/options.nix</a></li>
+</ul>
+<h2 id="microvmstorediskerofsflags"><a class="header" href="#microvmstorediskerofsflags">microvm.storeDiskErofsFlags</a></h2>
+<p>Flags to pass to mkfs.erofs</p>
+<p>Omit <code>"-Efragments"</code> and <code>"-Ededupe"</code> to enable multi-threading.</p>
+<p><em>Type:</em>
+list of string</p>
+<p><em>Default:</em></p>
+<pre><code>[ "-zlz4hc" ]
+  ++ lib.optional (kernelAtLeast "5.16") "-Eztailpacking"
+  ++ lib.optionals (kernelAtLeast "6.1") [
+  "-Efragments"
+  "-Ededupe"
+]
+
+</code></pre>
+<p><em>Declared by:</em></p>
+<ul>
+<li><a href="https://github.com/astro/microvm.nix/tree/main/nixos-modules/microvm/options.nix">microvm.nix/nixos-modules/microvm/options.nix</a></li>
+</ul>
+<h2 id="microvmstoredisksquashfsflags"><a class="header" href="#microvmstoredisksquashfsflags">microvm.storeDiskSquashfsFlags</a></h2>
+<p>Flags to pass to gensquashfs</p>
+<p><em>Type:</em>
+list of string</p>
+<p><em>Default:</em></p>
+<pre><code>[
+  "-c"
+  "zstd"
+  "-j"
+  "$NIX_BUILD_CORES"
+]
+</code></pre>
+<p><em>Declared by:</em></p>
+<ul>
+<li><a href="https://github.com/astro/microvm.nix/tree/main/nixos-modules/microvm/options.nix">microvm.nix/nixos-modules/microvm/options.nix</a></li>
+</ul>
+<h2 id="microvmstoredisktype"><a class="header" href="#microvmstoredisktype">microvm.storeDiskType</a></h2>
+<p>Boot disk file system type: squashfs is smaller, erofs is supposed to be faster.</p>
+<p>Defaults to erofs, unless the NixOS hardened profile is detected.</p>
+<p><em>Type:</em>
+one of “squashfs”, “erofs”</p>
+<p><em>Declared by:</em></p>
+<ul>
+<li><a href="https://github.com/astro/microvm.nix/tree/main/nixos-modules/microvm/options.nix">microvm.nix/nixos-modules/microvm/options.nix</a></li>
 </ul>
 <h2 id="microvmstoreondisk"><a class="header" href="#microvmstoreondisk">microvm.storeOnDisk</a></h2>
 <p>Whether to boot with the storeDisk, that is, unless the host’s /nix/store is a microvm.share.</p>
@@ -992,7 +1150,18 @@ boolean</p>
 <code>true</code></p>
 <p><em>Declared by:</em></p>
 <ul>
-<li><a href="file:///nix/store/rn3gyjyc6x7z6wb9nkwjwwnsdsh7j3zc-source/nixos-modules/microvm/options.nix">/nix/store/rn3gyjyc6x7z6wb9nkwjwwnsdsh7j3zc-source/nixos-modules/microvm/options.nix</a></li>
+<li><a href="https://github.com/astro/microvm.nix/tree/main/nixos-modules/microvm/options.nix">microvm.nix/nixos-modules/microvm/options.nix</a></li>
+</ul>
+<h2 id="microvmsystemsymlink"><a class="header" href="#microvmsystemsymlink">microvm.systemSymlink</a></h2>
+<p>Whether to inclcude a symlink of <code>config.system.build.toplevel</code> to <code>share/microvm/system</code>.
+This is required for commands like <code>microvm -l</code> to function but removes reference to the uncompressed store content when using a disk image for the nix store.</p>
+<p><em>Type:</em>
+boolean</p>
+<p><em>Default:</em>
+<code>false</code></p>
+<p><em>Declared by:</em></p>
+<ul>
+<li><a href="https://github.com/astro/microvm.nix/tree/main/nixos-modules/microvm/options.nix">microvm.nix/nixos-modules/microvm/options.nix</a></li>
 </ul>
 <h2 id="microvmuser"><a class="header" href="#microvmuser">microvm.user</a></h2>
 <p>User to switch to when started as root</p>
@@ -1002,17 +1171,52 @@ null or string</p>
 <code>null</code></p>
 <p><em>Declared by:</em></p>
 <ul>
-<li><a href="file:///nix/store/rn3gyjyc6x7z6wb9nkwjwwnsdsh7j3zc-source/nixos-modules/microvm/options.nix">/nix/store/rn3gyjyc6x7z6wb9nkwjwwnsdsh7j3zc-source/nixos-modules/microvm/options.nix</a></li>
+<li><a href="https://github.com/astro/microvm.nix/tree/main/nixos-modules/microvm/options.nix">microvm.nix/nixos-modules/microvm/options.nix</a></li>
 </ul>
 <h2 id="microvmvcpu"><a class="header" href="#microvmvcpu">microvm.vcpu</a></h2>
 <p>Number of virtual CPU cores</p>
 <p><em>Type:</em>
-signed integer</p>
+positive integer, meaning &gt;0</p>
 <p><em>Default:</em>
 <code>1</code></p>
 <p><em>Declared by:</em></p>
 <ul>
-<li><a href="file:///nix/store/rn3gyjyc6x7z6wb9nkwjwwnsdsh7j3zc-source/nixos-modules/microvm/options.nix">/nix/store/rn3gyjyc6x7z6wb9nkwjwwnsdsh7j3zc-source/nixos-modules/microvm/options.nix</a></li>
+<li><a href="https://github.com/astro/microvm.nix/tree/main/nixos-modules/microvm/options.nix">microvm.nix/nixos-modules/microvm/options.nix</a></li>
+</ul>
+<h2 id="microvmvirtiofsdextraargs"><a class="header" href="#microvmvirtiofsdextraargs">microvm.virtiofsd.extraArgs</a></h2>
+<p>Extra command-line switch to pass to virtiofsd.</p>
+<p><em>Type:</em>
+list of string</p>
+<p><em>Default:</em>
+<code>[ ]</code></p>
+<p><em>Declared by:</em></p>
+<ul>
+<li><a href="https://github.com/astro/microvm.nix/tree/main/nixos-modules/microvm/options.nix">microvm.nix/nixos-modules/microvm/options.nix</a></li>
+</ul>
+<h2 id="microvmvirtiofsdinodefilehandles"><a class="header" href="#microvmvirtiofsdinodefilehandles">microvm.virtiofsd.inodeFileHandles</a></h2>
+<p>When to use file handles to reference inodes instead of O_PATH file descriptors
+(never, prefer, mandatory)</p>
+<p>Allows you to overwrite default behavior in case you hit “too
+many open files” on eg. ZFS.
+<a href="https://gitlab.com/virtio-fs/virtiofsd/-/issues/121">https://gitlab.com/virtio-fs/virtiofsd/-/issues/121</a></p>
+<p><em>Type:</em>
+null or one of “never”, “prefer”, “mandatory”</p>
+<p><em>Default:</em>
+<code>null</code></p>
+<p><em>Declared by:</em></p>
+<ul>
+<li><a href="https://github.com/astro/microvm.nix/tree/main/nixos-modules/microvm/options.nix">microvm.nix/nixos-modules/microvm/options.nix</a></li>
+</ul>
+<h2 id="microvmvirtiofsdthreadpoolsize"><a class="header" href="#microvmvirtiofsdthreadpoolsize">microvm.virtiofsd.threadPoolSize</a></h2>
+<p>The amounts of threads virtiofsd should spawn. This option also takes the special
+string <code>\</code>nproc`` which spawns as many threads as the host has cores.</p>
+<p><em>Type:</em>
+string or (unsigned integer, meaning &gt;=0)</p>
+<p><em>Default:</em>
+<code>"`nproc`"</code></p>
+<p><em>Declared by:</em></p>
+<ul>
+<li><a href="https://github.com/astro/microvm.nix/tree/main/nixos-modules/microvm/options.nix">microvm.nix/nixos-modules/microvm/options.nix</a></li>
 </ul>
 <h2 id="microvmvolumes"><a class="header" href="#microvmvolumes">microvm.volumes</a></h2>
 <p>Disk images</p>
@@ -1022,7 +1226,7 @@ list of (submodule)</p>
 <code>[ ]</code></p>
 <p><em>Declared by:</em></p>
 <ul>
-<li><a href="file:///nix/store/rn3gyjyc6x7z6wb9nkwjwwnsdsh7j3zc-source/nixos-modules/microvm/options.nix">/nix/store/rn3gyjyc6x7z6wb9nkwjwwnsdsh7j3zc-source/nixos-modules/microvm/options.nix</a></li>
+<li><a href="https://github.com/astro/microvm.nix/tree/main/nixos-modules/microvm/options.nix">microvm.nix/nixos-modules/microvm/options.nix</a></li>
 </ul>
 <h2 id="microvmvolumesautocreate"><a class="header" href="#microvmvolumesautocreate">microvm.volumes.*.autoCreate</a></h2>
 <p>Created image on host automatically before start?</p>
@@ -1032,17 +1236,27 @@ boolean</p>
 <code>true</code></p>
 <p><em>Declared by:</em></p>
 <ul>
-<li><a href="file:///nix/store/rn3gyjyc6x7z6wb9nkwjwwnsdsh7j3zc-source/nixos-modules/microvm/options.nix">/nix/store/rn3gyjyc6x7z6wb9nkwjwwnsdsh7j3zc-source/nixos-modules/microvm/options.nix</a></li>
+<li><a href="https://github.com/astro/microvm.nix/tree/main/nixos-modules/microvm/options.nix">microvm.nix/nixos-modules/microvm/options.nix</a></li>
+</ul>
+<h2 id="microvmvolumesdirect"><a class="header" href="#microvmvolumesdirect">microvm.volumes.*.direct</a></h2>
+<p>Whether to set O_DIRECT on the disk.</p>
+<p><em>Type:</em>
+boolean</p>
+<p><em>Default:</em>
+<code>false</code></p>
+<p><em>Declared by:</em></p>
+<ul>
+<li><a href="https://github.com/astro/microvm.nix/tree/main/nixos-modules/microvm/options.nix">microvm.nix/nixos-modules/microvm/options.nix</a></li>
 </ul>
 <h2 id="microvmvolumesfstype"><a class="header" href="#microvmvolumesfstype">microvm.volumes.*.fsType</a></h2>
-<p>File system for automatic creation and mounting</p>
+<p>Filesystem for automatic creation and mounting</p>
 <p><em>Type:</em>
 string</p>
 <p><em>Default:</em>
-<code>&quot;ext4&quot;</code></p>
+<code>"ext4"</code></p>
 <p><em>Declared by:</em></p>
 <ul>
-<li><a href="file:///nix/store/rn3gyjyc6x7z6wb9nkwjwwnsdsh7j3zc-source/nixos-modules/microvm/options.nix">/nix/store/rn3gyjyc6x7z6wb9nkwjwwnsdsh7j3zc-source/nixos-modules/microvm/options.nix</a></li>
+<li><a href="https://github.com/astro/microvm.nix/tree/main/nixos-modules/microvm/options.nix">microvm.nix/nixos-modules/microvm/options.nix</a></li>
 </ul>
 <h2 id="microvmvolumesimage"><a class="header" href="#microvmvolumesimage">microvm.volumes.*.image</a></h2>
 <p>Path to disk image on the host</p>
@@ -1050,25 +1264,55 @@ string</p>
 string</p>
 <p><em>Declared by:</em></p>
 <ul>
-<li><a href="file:///nix/store/rn3gyjyc6x7z6wb9nkwjwwnsdsh7j3zc-source/nixos-modules/microvm/options.nix">/nix/store/rn3gyjyc6x7z6wb9nkwjwwnsdsh7j3zc-source/nixos-modules/microvm/options.nix</a></li>
+<li><a href="https://github.com/astro/microvm.nix/tree/main/nixos-modules/microvm/options.nix">microvm.nix/nixos-modules/microvm/options.nix</a></li>
 </ul>
 <h2 id="microvmvolumeslabel"><a class="header" href="#microvmvolumeslabel">microvm.volumes.*.label</a></h2>
-<p>Label of the volume, if any. Only applicable if autoCreate is true; otherwise labeling of the volume must be done manually</p>
+<p>Label of the volume, if any. Only applicable if <code>autoCreate</code> is true; otherwise labeling of the volume must be done manually</p>
 <p><em>Type:</em>
 null or string</p>
 <p><em>Default:</em>
 <code>null</code></p>
 <p><em>Declared by:</em></p>
 <ul>
-<li><a href="file:///nix/store/rn3gyjyc6x7z6wb9nkwjwwnsdsh7j3zc-source/nixos-modules/microvm/options.nix">/nix/store/rn3gyjyc6x7z6wb9nkwjwwnsdsh7j3zc-source/nixos-modules/microvm/options.nix</a></li>
+<li><a href="https://github.com/astro/microvm.nix/tree/main/nixos-modules/microvm/options.nix">microvm.nix/nixos-modules/microvm/options.nix</a></li>
+</ul>
+<h2 id="microvmvolumesmkfsextraargs"><a class="header" href="#microvmvolumesmkfsextraargs">microvm.volumes.*.mkfsExtraArgs</a></h2>
+<p>Set extra Filesystem creation parameters</p>
+<p><em>Type:</em>
+list of string</p>
+<p><em>Default:</em>
+<code>[ ]</code></p>
+<p><em>Declared by:</em></p>
+<ul>
+<li><a href="https://github.com/astro/microvm.nix/tree/main/nixos-modules/microvm/options.nix">microvm.nix/nixos-modules/microvm/options.nix</a></li>
 </ul>
 <h2 id="microvmvolumesmountpoint"><a class="header" href="#microvmvolumesmountpoint">microvm.volumes.*.mountPoint</a></h2>
 <p>If and where to mount the volume inside the container</p>
 <p><em>Type:</em>
-null or path</p>
+null or absolute path</p>
 <p><em>Declared by:</em></p>
 <ul>
-<li><a href="file:///nix/store/rn3gyjyc6x7z6wb9nkwjwwnsdsh7j3zc-source/nixos-modules/microvm/options.nix">/nix/store/rn3gyjyc6x7z6wb9nkwjwwnsdsh7j3zc-source/nixos-modules/microvm/options.nix</a></li>
+<li><a href="https://github.com/astro/microvm.nix/tree/main/nixos-modules/microvm/options.nix">microvm.nix/nixos-modules/microvm/options.nix</a></li>
+</ul>
+<h2 id="microvmvolumesreadonly"><a class="header" href="#microvmvolumesreadonly">microvm.volumes.*.readOnly</a></h2>
+<p>Turn off write access</p>
+<p><em>Type:</em>
+boolean</p>
+<p><em>Default:</em>
+<code>false</code></p>
+<p><em>Declared by:</em></p>
+<ul>
+<li><a href="https://github.com/astro/microvm.nix/tree/main/nixos-modules/microvm/options.nix">microvm.nix/nixos-modules/microvm/options.nix</a></li>
+</ul>
+<h2 id="microvmvolumesserial"><a class="header" href="#microvmvolumesserial">microvm.volumes.*.serial</a></h2>
+<p>User-configured serial number for the disk</p>
+<p><em>Type:</em>
+null or string</p>
+<p><em>Default:</em>
+<code>null</code></p>
+<p><em>Declared by:</em></p>
+<ul>
+<li><a href="https://github.com/astro/microvm.nix/tree/main/nixos-modules/microvm/options.nix">microvm.nix/nixos-modules/microvm/options.nix</a></li>
 </ul>
 <h2 id="microvmvolumessize"><a class="header" href="#microvmvolumessize">microvm.volumes.*.size</a></h2>
 <p>Volume size if created automatically</p>
@@ -1076,7 +1320,7 @@ null or path</p>
 signed integer</p>
 <p><em>Declared by:</em></p>
 <ul>
-<li><a href="file:///nix/store/rn3gyjyc6x7z6wb9nkwjwwnsdsh7j3zc-source/nixos-modules/microvm/options.nix">/nix/store/rn3gyjyc6x7z6wb9nkwjwwnsdsh7j3zc-source/nixos-modules/microvm/options.nix</a></li>
+<li><a href="https://github.com/astro/microvm.nix/tree/main/nixos-modules/microvm/options.nix">microvm.nix/nixos-modules/microvm/options.nix</a></li>
 </ul>
 <h2 id="microvmvsockcid"><a class="header" href="#microvmvsockcid">microvm.vsock.cid</a></h2>
 <p>Virtual Machine address;
@@ -1093,7 +1337,7 @@ null or signed integer</p>
 <code>null</code></p>
 <p><em>Declared by:</em></p>
 <ul>
-<li><a href="file:///nix/store/rn3gyjyc6x7z6wb9nkwjwwnsdsh7j3zc-source/nixos-modules/microvm/options.nix">/nix/store/rn3gyjyc6x7z6wb9nkwjwwnsdsh7j3zc-source/nixos-modules/microvm/options.nix</a></li>
+<li><a href="https://github.com/astro/microvm.nix/tree/main/nixos-modules/microvm/options.nix">microvm.nix/nixos-modules/microvm/options.nix</a></li>
 </ul>
 <h2 id="microvmwritablestoreoverlay"><a class="header" href="#microvmwritablestoreoverlay">microvm.writableStoreOverlay</a></h2>
 <p>Path to the writable /nix/store overlay.</p>
@@ -1109,10 +1353,10 @@ null or string</p>
 <p><em>Default:</em>
 <code>null</code></p>
 <p><em>Example:</em>
-<code>&quot;/nix/.rw-store&quot;</code></p>
+<code>"/nix/.rw-store"</code></p>
 <p><em>Declared by:</em></p>
 <ul>
-<li><a href="file:///nix/store/rn3gyjyc6x7z6wb9nkwjwwnsdsh7j3zc-source/nixos-modules/microvm/options.nix">/nix/store/rn3gyjyc6x7z6wb9nkwjwwnsdsh7j3zc-source/nixos-modules/microvm/options.nix</a></li>
+<li><a href="https://github.com/astro/microvm.nix/tree/main/nixos-modules/microvm/options.nix">microvm.nix/nixos-modules/microvm/options.nix</a></li>
 </ul>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="running-a-microvm-as-a-package"><a class="header" href="#running-a-microvm-as-a-package">Running a MicroVM as a package</a></h1>
 <p>Quickly running a MicroVM interactively is great for testing. You get
@@ -1145,26 +1389,26 @@ system</a></li>
 <p>Prepare your host by including the microvm.nix <code>host</code> nixosModule:</p>
 <pre><code class="language-nix"># Your server's flake.nix
 {
-  inputs.nixpkgs.url = &quot;github:nixos/nixpkgs/nixos-unstable&quot;;
-  inputs.microvm.url = &quot;github:astro/microvm.nix&quot;;
-  inputs.microvm.inputs.nixpkgs.follows = &quot;nixpkgs&quot;;
+  inputs.nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+  inputs.microvm.url = "github:astro/microvm.nix";
+  inputs.microvm.inputs.nixpkgs.follows = "nixpkgs";
 
   outputs = { self, nixpkgs, microvm }: {
     # Example nixosConfigurations entry
     nixosConfigurations.server1 = nixpkgs.lib.nixosSystem {
-      system = &quot;x86_64-linux&quot;;
+      system = "x86_64-linux";
       modules = [
         # Include the microvm host module
         microvm.nixosModules.host
         # Add more modules here
         {
-          networking.hostName = &quot;server1&quot;;
+          networking.hostName = "server1";
 
           # try to automatically start these MicroVMs on bootup
           microvm.autostart = [
-            &quot;my-microvm&quot;
-            &quot;your-microvm&quot;
-            &quot;their-microvm&quot;
+            "my-microvm"
+            "your-microvm"
+            "their-microvm"
           ];
         }
       ];
@@ -1176,8 +1420,8 @@ system</a></li>
 <p>If you really cannot migrate to Flakes easily, just import the <code>host</code>
 module directly in your NixOS configuration:</p>
 <pre><code class="language-nix">imports = [ (builtins.fetchGit {
-  url = &quot;https://github.com/astro/microvm.nix&quot;;
-} + &quot;/nixos-modules/host&quot;) ];
+  url = "https://github.com/astro/microvm.nix";
+} + "/nixos-modules/host") ];
 </code></pre>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="a-simple-network-setup"><a class="header" href="#a-simple-network-setup">A simple network setup</a></h1>
 <p>While networking infrastructure is out of scope for the <strong>microvm.nix</strong>
@@ -1200,29 +1444,29 @@ bridge with the <code>vm-*</code> TAP interfaces that you will specify in the Mi
 definition.</p>
 <pre><code class="language-nix">systemd.network.enable = true;
 
-systemd.network.networks.&quot;10-lan&quot; = {
-  matchConfig.Name = [&quot;eno1&quot; &quot;vm-*&quot;];
+systemd.network.networks."10-lan" = {
+  matchConfig.Name = ["eno1" "vm-*"];
   networkConfig = {
-    Bridge = &quot;br0&quot;;
+    Bridge = "br0";
   };
 };
 
-systemd.network.netdevs.&quot;br0&quot; = {
+systemd.network.netdevs."br0" = {
   netdevConfig = {
-    Name = &quot;br0&quot;;
-    Kind = &quot;bridge&quot;;
+    Name = "br0";
+    Kind = "bridge";
   };
 };
 
-systemd.network.networks.&quot;10-lan-bridge&quot; = {
-  matchConfig.Name = &quot;br0&quot;;
+systemd.network.networks."10-lan-bridge" = {
+  matchConfig.Name = "br0";
   networkConfig = {
-    Address = [&quot;192.168.1.2/24&quot; &quot;2001:db8::a/64&quot;];
-    Gateway = &quot;192.168.1.1&quot;;
-    DNS = [&quot;192.168.1.1&quot;];
+    Address = ["192.168.1.2/24" "2001:db8::a/64"];
+    Gateway = "192.168.1.1";
+    DNS = ["192.168.1.1"];
     IPv6AcceptRA = true;
   };
-  linkConfig.RequiredForOnline = &quot;routable&quot;;
+  linkConfig.RequiredForOnline = "routable";
 };
 </code></pre>
 <p>Now that the host is configured, you can define a MicroVM to have a static IP
@@ -1231,23 +1475,36 @@ address with:</p>
   #...add additional MicroVM configuration here
   interfaces = [
     {
-      type = &quot;tap&quot;;
-      id = &quot;vm-test1&quot;;
-      mac = &quot;02:00:00:00:00:01&quot;;
+      type = "tap";
+      id = "vm-test1";
+      mac = "02:00:00:00:00:01";
     }
   ];
 };
 
 systemd.network.enable = true;
 
-systemd.network.networks.&quot;20-lan&quot; = {
-  matchConfig.Type = &quot;ether&quot;;
+systemd.network.networks."20-lan" = {
+  matchConfig.Type = "ether";
   networkConfig = {
-    Address = [&quot;192.168.1.3/24&quot; &quot;2001:db8::b/64&quot;];
-    Gateway = &quot;192.168.1.1&quot;;
-    DNS = [&quot;192.168.1.1&quot;];
+    Address = ["192.168.1.3/24" "2001:db8::b/64"];
+    Gateway = "192.168.1.1";
+    DNS = ["192.168.1.1"];
     IPv6AcceptRA = true;
-    DHCP = &quot;no&quot;;
+    DHCP = "no";
+  };
+};
+</code></pre>
+<h2 id="docker-and-systemd-network"><a class="header" href="#docker-and-systemd-network">Docker and systemd-network</a></h2>
+<p>If you use the above <code>systemd.network</code> bridge config and wish to run
+Docker containers inside your microvms using <code>virtualisation.docker</code>,
+you may need to add the following snippet to stop <code>systemd-networkd</code> from
+managing the bridged <code>veth*</code> interfaces Docker creates for each container.
+Without this, network access inside the containers will be broken.</p>
+<pre><code class="language-nix">systemd.network.networks."19-docker" = {
+  matchConfig.Name = "veth*";
+  linkConfig = {
+    Unmanaged = true;
   };
 };
 </code></pre>
@@ -1256,7 +1513,7 @@ systemd.network.networks.&quot;20-lan&quot; = {
 the virtual bridge, have a look into these alternatives:</p>
 <ul>
 <li>
-<p>Network interfaces with <code>type = &quot;macvtap&quot;</code> are supported in
+<p>Network interfaces with <code>type = "macvtap"</code> are supported in
 microvm.nix. While they're technically tap devices, they attach to
 an external Ethernet port, eliminating the <code>br0</code> bridge.</p>
 </li>
@@ -1267,37 +1524,39 @@ for PCI passthru into MicroVMs.</p>
 </ul>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="advanced-network-setup"><a class="header" href="#advanced-network-setup">Advanced network setup</a></h1>
 <p>Renting a server in a datacenter usually gets you one IP address. You
-should not bridge your local VM traffic together with the physical
-Ethernet uplink port. Instead, setup a bridge only for the Virtual
-Machines, and provide them with Internet through NAT just like your
-plastic ADSL router at home.</p>
+must not bridge your local VM traffic together with the physical
+Ethernet uplink port. Instead, setup a host-internal bridge for the
+Virtual Machines, and provide them with Internet through NAT just like
+your plastic ADSL router at home.</p>
 <h2 id="a-bridge-to-link-tap-interfaces-1"><a class="header" href="#a-bridge-to-link-tap-interfaces-1">A bridge to link TAP interfaces</a></h2>
 <p>Instead of placing MicroVMs directly on a LAN, one can also use a TAP
 interface to get a virtual Ethernet interface on the host. Although it
-is possible to assign individual IP configuration to these individual
-interfaces, let us avoid the additional configuration effort and
-create a bridge instead:</p>
-<pre><code class="language-nix">systemd.network = {
-  netdevs.&quot;10-microvm&quot;.netdevConfig = {
-    Kind = &quot;bridge&quot;;
-    Name = &quot;microvm&quot;;
-  };
-  networks.&quot;10-microvm&quot; = {
-    matchConfig.Name = &quot;microvm&quot;;
-    networkConfig = {
-      DHCPServer = true;
-      IPv6SendRA = true;
-    };
-    addresses = [ {
-      addressConfig.Address = &quot;10.0.0.1/24&quot;;
-    } {
-      addressConfig.Address = &quot;fd12:3456:789a::1/64&quot;;
-    } ];
-    ipv6Prefixes = [ {
-      ipv6PrefixConfig.Prefix = &quot;fd12:3456:789a::/64&quot;;
-    } ];
-  };
+is possible to <a href="./routed-network.html">assign individual IP
+configuration</a> to these individual interfaces,
+let us avoid the additional configuration effort and create a bridge
+instead:</p>
+<pre><code class="language-nix">systemd.network.netdevs."10-microvm".netdevConfig = {
+  Kind = "bridge";
+  Name = "microvm";
 };
+systemd.network.networks."10-microvm" = {
+  matchConfig.Name = "microvm";
+  networkConfig = {
+    DHCPServer = true;
+    IPv6SendRA = true;
+  };
+  addresses = [ {
+    addressConfig.Address = "10.0.0.1/24";
+  } {
+    addressConfig.Address = "fd12:3456:789a::1/64";
+  } ];
+  ipv6Prefixes = [ {
+    ipv6PrefixConfig.Prefix = "fd12:3456:789a::/64";
+  } ];
+};
+
+# Allow inbound traffic for the DHCP server
+networking.firewall.allowedUDPPorts = [ 67 ];
 </code></pre>
 <p>This configuration will hand out IP addresses to clients on the
 bridge. In practise, better leave out the DHCP server and its state by
@@ -1305,12 +1564,10 @@ opting for declarative, versioned configuration instead.</p>
 <p>Last, the TAP interfaces of MicroVMs shall be attached to this central
 bridge. Make sure your <code>matchConfig</code> matches just the interfaces you
 want!</p>
-<pre><code class="language-nix">systemd.network = {
-  networks.&quot;11-microvm&quot; = {
-    matchConfig.Name = &quot;vm-*&quot;;
-    # Attach to the bridge that was configured above
-    networkConfig.Bridge = &quot;microvm&quot;;
-  };
+<pre><code class="language-nix">systemd.network.networks."11-microvm" = {
+  matchConfig.Name = "vm-*";
+  # Attach to the bridge that was configured above
+  networkConfig.Bridge = "microvm";
 };
 </code></pre>
 <h2 id="provide-internet-access-with-nat"><a class="header" href="#provide-internet-access-with-nat">Provide Internet Access with NAT</a></h2>
@@ -1321,10 +1578,14 @@ your internal virtual machines with <em>Network Address Translation</em>.</p>
 MicroVMs. NAT works for this address family, too!</p>
 <pre><code class="language-nix">networking.nat = {
   enable = true;
+  # NAT66 exists and works. But if you have a proper subnet in
+  # 2000::/3 you should route that and remove this setting:
   enableIPv6 = true;
+
   # Change this to the interface with upstream Internet access
-  externalInterface = &quot;eth0&quot;;
-  internalInterfaces = [ &quot;microvm&quot; ];
+  externalInterface = "eth0";
+  # The bridge where you want to provide Internet access
+  internalInterfaces = [ "microvm" ];
 };
 </code></pre>
 <p>Check out
@@ -1341,15 +1602,151 @@ other hosts:</p>
 <pre><code class="language-nix">networking.nat = {
   enable = true;
   forwardPorts = [ {
-    proto = &quot;tcp&quot;;
+    proto = "tcp";
     sourcePort = 80;
     destination = my-addresses.http-reverse-proxy.ip4;
   } {
-    proto = &quot;tcp&quot;;
+    proto = "tcp";
     sourcePort = 443;
     destination = my-addresses.https-reverse-proxy.ip4;
   } ];
 };
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="routed-network-setup"><a class="header" href="#routed-network-setup">Routed network setup</a></h1>
+<h2 id="motivation"><a class="header" href="#motivation">Motivation</a></h2>
+<p>In bridged setups the Virtual Machines share the same Ethernet
+segment. A compromised VM still has raw network access, allowing it to
+send a lot of funny packets that cause problems for other
+VMs. Examples:</p>
+<ul>
+<li>Forging MAC addresses</li>
+<li>Running rogue DHCP servers</li>
+<li>ARP/NDP spoofing</li>
+<li>Meddling with link-local multicast</li>
+</ul>
+<p>This can be avoided by unsharing the Ethernet segments, ie. removing
+the bridge.</p>
+<h2 id="addressing"><a class="header" href="#addressing">Addressing</a></h2>
+<p>Compared to one Ethernet where we assign a large subnet like
+<code>10.0.0.0/24</code>, we will now only deal with <em>Host Routes</em> where the
+prefix length is <code>/32</code> for IPv4 and <code>/128</code> for IPv6. Note that by
+doing this we no longer lose precious space to a subnet's network and
+broadcast addresses.</p>
+<h2 id="host-configuration"><a class="header" href="#host-configuration">Host configuration</a></h2>
+<p>Using systemd-networkd, a VM's tap interface is configured with static
+addresses and the corresponding host routes. We do this for up to
+<code>maxVMs</code>. Increasing this number will create as many <code>.network</code>
+configuration files, so it's relatively cheap.</p>
+<pre><code class="language-nix">{ lib, ... }:
+
+let
+  maxVMs = 64;
+
+in
+{
+  networking.useNetworkd = true;
+
+  systemd.network.networks = builtins.listToAttrs (
+    map (index: {
+      name = "30-vm${toString index}";
+      value = {
+        matchConfig.Name = "vm${toString index}";
+        # Host's addresses
+        address = [
+          "10.0.0.0/32"
+          "fec0::/128"
+        ];
+        # Setup routes to the VM
+        routes = [ {
+          Destination = "10.0.0.${toString index}/32";
+        } {
+          Destination = "fec0::${lib.toHexString index}/128";
+        } ];
+        # Enable routing
+        networkConfig = {
+          IPv4Forwarding = true;
+          IPv6Forwarding = true;
+        };
+      };
+    }) (lib.genList (i: i + 1) maxVMs)
+  );
+}
+</code></pre>
+<h2 id="nat"><a class="header" href="#nat">NAT</a></h2>
+<p>For NAT configuration on the host we're not going to specify each
+potential tap interface. That would create a lot of firewall rules. To
+avoid this additional complexity, use a single subnet that matches all
+your VMs' addresses:</p>
+<pre><code class="language-nix">{
+  networking.nat = {
+    enable = true;
+    internalIPs = [ "10.0.0.0/24" ];
+    # Change this to the interface with upstream Internet access
+    externalInterface = "enp0s3";
+  };
+}
+</code></pre>
+<h1 id="virtual-machine-configuration"><a class="header" href="#virtual-machine-configuration">Virtual Machine configuration</a></h1>
+<p>We no longer rely on DHCP for this non-standard setup. To produce IPv4
+and IPv6 addresses let's assign a number <code>index</code> to each MicroVM. Make
+sure that this number is <strong>not reused</strong> by two VMs!</p>
+<p>We suggest creating some sort of central configuration file that
+contains each VM's network <code>index</code> in one place. That should make
+reuses obvious. If that list becomes too long, write a NixOS
+assertion!</p>
+<pre><code class="language-nix">{ lib, ... }:
+
+let
+  # Change this by VM!
+  index = 5;
+
+  mac = "00:00:00:00:00:01";
+
+in
+{
+  microvm.interfaces = [ {
+    id = "vm${toString index}";
+    type = "tap";
+    inherit mac;
+  } ];
+
+  networking.useNetworkd = true;
+
+  systemd.network.networks."10-eth" = {
+    matchConfig.MACAddress = mac;
+    # Static IP configuration
+    address = [
+      "10.0.0.${toString index}/32"
+      "fec0::${lib.toHexString index}/128"
+    ];
+    routes = [ {
+      # A route to the host
+      Destination = "10.0.0.0/32";
+      GatewayOnLink = true;
+    } {
+      # Default route
+      Destination = "0.0.0.0/0";
+      Gateway = "10.0.0.0";
+      GatewayOnLink = true;
+    } {
+      # Default route
+      Destination = "::/0";
+      Gateway = "fec0::";
+      GatewayOnLink = true;
+    } ];
+    networkConfig = {
+      # DNS servers no longer come from DHCP nor Router
+      # Advertisements. Perhaps you want to change the defaults:
+      DNS = [
+        # Quad9.net
+        "9.9.9.9"
+        "149.112.112.112"
+        "2620:fe::fe"
+        "2620:fe::9"
+      ];
+    };
+  };
+}
 </code></pre>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="systemd-services-on-a-microvm-host"><a class="header" href="#systemd-services-on-a-microvm-host">systemd services on a MicroVM host</a></h1>
 <p>The <code>host</code> nixosModule provides a few systemd services for additional
@@ -1382,6 +1779,153 @@ MicroVM name.</p>
 <h2 id="microvmstarget"><a class="header" href="#microvmstarget"><code>microvms.target</code></a></h2>
 <p>Depends on the <code>microvm@.service</code> instance for all configured
 <code>microvm.autostart</code>.</p>
+<div style="break-before: page; page-break-before: always;"></div><h2 id="microvmautostart"><a class="header" href="#microvmautostart">microvm.autostart</a></h2>
+<p>MicroVMs to start by default.</p>
+<p>This includes declarative <code>config.microvm.vms</code> as well as MicroVMs that are managed through the <code>microvm</code> command.</p>
+<p><em>Type:</em>
+list of string</p>
+<p><em>Default:</em>
+<code>[ ]</code></p>
+<p><em>Declared by:</em></p>
+<ul>
+<li><a href="https://github.com/astro/microvm.nix/tree/main/nixos-modules/host/options.nix">microvm.nix/nixos-modules/host/options.nix</a></li>
+</ul>
+<h2 id="microvmhostenable"><a class="header" href="#microvmhostenable">microvm.host.enable</a></h2>
+<p>Whether to enable the microvm.nix host module.</p>
+<p><em>Type:</em>
+boolean</p>
+<p><em>Default:</em>
+<code>true</code></p>
+<p><em>Declared by:</em></p>
+<ul>
+<li><a href="https://github.com/astro/microvm.nix/tree/main/nixos-modules/host/options.nix">microvm.nix/nixos-modules/host/options.nix</a></li>
+</ul>
+<h2 id="microvmhostusenotifysockets"><a class="header" href="#microvmhostusenotifysockets">microvm.host.useNotifySockets</a></h2>
+<p>Enable if all your MicroVMs run with a Hypervisor that sends
+readiness notification over a VSOCK.</p>
+<p><strong>Danger!</strong> If one of your MicroVMs doesn’t do this, its
+systemd service will not start up successfully!</p>
+<p><em>Type:</em>
+boolean</p>
+<p><em>Default:</em>
+<code>false</code></p>
+<p><em>Declared by:</em></p>
+<ul>
+<li><a href="https://github.com/astro/microvm.nix/tree/main/nixos-modules/host/options.nix">microvm.nix/nixos-modules/host/options.nix</a></li>
+</ul>
+<h2 id="microvmstatedir"><a class="header" href="#microvmstatedir">microvm.stateDir</a></h2>
+<p>Directory that contains the MicroVMs</p>
+<p><em>Type:</em>
+absolute path</p>
+<p><em>Default:</em>
+<code>"/var/lib/microvms"</code></p>
+<p><em>Declared by:</em></p>
+<ul>
+<li><a href="https://github.com/astro/microvm.nix/tree/main/nixos-modules/host/options.nix">microvm.nix/nixos-modules/host/options.nix</a></li>
+</ul>
+<h2 id="microvmvms"><a class="header" href="#microvmvms">microvm.vms</a></h2>
+<p>The MicroVMs that shall be built declaratively with the host NixOS.</p>
+<p><em>Type:</em>
+attribute set of (submodule)</p>
+<p><em>Default:</em>
+<code>{ }</code></p>
+<p><em>Declared by:</em></p>
+<ul>
+<li><a href="https://github.com/astro/microvm.nix/tree/main/nixos-modules/host/options.nix">microvm.nix/nixos-modules/host/options.nix</a></li>
+</ul>
+<h2 id="microvmvmsnameautostart"><a class="header" href="#microvmvmsnameautostart">microvm.vms.&lt;name&gt;.autostart</a></h2>
+<p>Add this MicroVM to config.microvm.autostart?</p>
+<p><em>Type:</em>
+boolean</p>
+<p><em>Default:</em>
+<code>true</code></p>
+<p><em>Declared by:</em></p>
+<ul>
+<li><a href="https://github.com/astro/microvm.nix/tree/main/nixos-modules/host/options.nix">microvm.nix/nixos-modules/host/options.nix</a></li>
+</ul>
+<h2 id="microvmvmsnameconfig"><a class="header" href="#microvmvmsnameconfig">microvm.vms.&lt;name&gt;.config</a></h2>
+<p>A specification of the desired configuration of this MicroVM,
+as a NixOS module, for building <strong>without</strong> a flake.</p>
+<p><em>Type:</em>
+null or (Toplevel NixOS config)</p>
+<p><em>Default:</em>
+<code>null</code></p>
+<p><em>Declared by:</em></p>
+<ul>
+<li><a href="https://github.com/astro/microvm.nix/tree/main/nixos-modules/host/options.nix">microvm.nix/nixos-modules/host/options.nix</a></li>
+</ul>
+<h2 id="microvmvmsnameflake"><a class="header" href="#microvmvmsnameflake">microvm.vms.&lt;name&gt;.flake</a></h2>
+<p>Source flake for declarative build</p>
+<p><em>Type:</em>
+null or absolute path</p>
+<p><em>Default:</em>
+<code>flakeInputs.my-infra</code></p>
+<p><em>Declared by:</em></p>
+<ul>
+<li><a href="https://github.com/astro/microvm.nix/tree/main/nixos-modules/host/options.nix">microvm.nix/nixos-modules/host/options.nix</a></li>
+</ul>
+<h2 id="microvmvmsnamenixpkgs"><a class="header" href="#microvmvmsnamenixpkgs">microvm.vms.&lt;name&gt;.nixpkgs</a></h2>
+<p>This option is only respected when <code>config</code> is
+specified.</p>
+<p>The nixpkgs path to use for the MicroVM. Defaults to the
+host’s nixpkgs.</p>
+<p><em>Type:</em>
+absolute path</p>
+<p><em>Default:</em>
+<code>pkgs.path</code></p>
+<p><em>Declared by:</em></p>
+<ul>
+<li><a href="https://github.com/astro/microvm.nix/tree/main/nixos-modules/host/options.nix">microvm.nix/nixos-modules/host/options.nix</a></li>
+</ul>
+<h2 id="microvmvmsnamepkgs"><a class="header" href="#microvmvmsnamepkgs">microvm.vms.&lt;name&gt;.pkgs</a></h2>
+<p>This option is only respected when <code>config</code> is specified.</p>
+<p>The package set to use for the MicroVM. Must be a
+nixpkgs package set with the microvm overlay. Determines
+the system of the MicroVM.</p>
+<p>If set to null, a new package set will be instantiated.</p>
+<p><em>Type:</em>
+null or unspecified value</p>
+<p><em>Default:</em>
+<code>pkgs</code></p>
+<p><em>Declared by:</em></p>
+<ul>
+<li><a href="https://github.com/astro/microvm.nix/tree/main/nixos-modules/host/options.nix">microvm.nix/nixos-modules/host/options.nix</a></li>
+</ul>
+<h2 id="microvmvmsnamerestartifchanged"><a class="header" href="#microvmvmsnamerestartifchanged">microvm.vms.&lt;name&gt;.restartIfChanged</a></h2>
+<p>Restart this MicroVM’s services if the systemd units are changed,
+i.e. if it has been updated by rebuilding the host.</p>
+<p>Defaults to true for fully-declarative MicroVMs.</p>
+<p><em>Type:</em>
+boolean</p>
+<p><em>Default:</em>
+<code>false</code></p>
+<p><em>Declared by:</em></p>
+<ul>
+<li><a href="https://github.com/astro/microvm.nix/tree/main/nixos-modules/host/options.nix">microvm.nix/nixos-modules/host/options.nix</a></li>
+</ul>
+<h2 id="microvmvmsnamespecialargs"><a class="header" href="#microvmvmsnamespecialargs">microvm.vms.&lt;name&gt;.specialArgs</a></h2>
+<p>This option is only respected when <code>config</code> is specified.</p>
+<p>A set of special arguments to be passed to NixOS modules.
+This will be merged into the <code>specialArgs</code> used to evaluate
+the NixOS configurations.</p>
+<p><em>Type:</em>
+attribute set of unspecified value</p>
+<p><em>Default:</em>
+<code>{ }</code></p>
+<p><em>Declared by:</em></p>
+<ul>
+<li><a href="https://github.com/astro/microvm.nix/tree/main/nixos-modules/host/options.nix">microvm.nix/nixos-modules/host/options.nix</a></li>
+</ul>
+<h2 id="microvmvmsnameupdateflake"><a class="header" href="#microvmvmsnameupdateflake">microvm.vms.&lt;name&gt;.updateFlake</a></h2>
+<p>Source flakeref to store for later imperative update</p>
+<p><em>Type:</em>
+null or string</p>
+<p><em>Default:</em>
+<code>"git+file:///home/user/my-infra"</code></p>
+<p><em>Declared by:</em></p>
+<ul>
+<li><a href="https://github.com/astro/microvm.nix/tree/main/nixos-modules/host/options.nix">microvm.nix/nixos-modules/host/options.nix</a></li>
+</ul>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="declarative-microvms"><a class="header" href="#declarative-microvms">Declarative MicroVMs</a></h1>
 <p>Provided your NixOS host <a href="./host.html">includes the host nixosModule</a>,
 options are declared to build a MicroVM together with the host.
@@ -1402,7 +1946,7 @@ nixos-containers work if you are familiar with those.</p>
     my-microvm = {
       # The package set to use for the microvm. This also determines the microvm's architecture.
       # Defaults to the host system's package set if not given.
-      pkgs = import nixpkgs { system = &quot;x86_64-linux&quot;; };
+      pkgs = import nixpkgs { system = "x86_64-linux"; };
 
       # (Optional) A set of special arguments to be passed to the MicroVM's NixOS modules.
       #specialArgs = {};
@@ -1413,10 +1957,10 @@ nixos-containers work if you are familiar with those.</p>
         # It is highly recommended to share the host's nix-store
         # with the VMs to prevent building huge images.
         microvm.shares = [{
-          source = &quot;/nix/store&quot;;
-          mountPoint = &quot;/nix/.ro-store&quot;;
-          tag = &quot;ro-store&quot;;
-          proto = &quot;virtiofs&quot;;
+          source = "/nix/store";
+          mountPoint = "/nix/.ro-store";
+          tag = "ro-store";
+          proto = "virtiofs";
         }];
 
         # Any other configuration for your MicroVM
@@ -1438,12 +1982,62 @@ command</a>.</p>
     # under nixosConfigurations
     flake = self;
     # Specify from where to let `microvm -u` update later on
-    updateFlake = &quot;git+file:///etc/nixos&quot;;
+    updateFlake = "git+file:///etc/nixos";
   };
 };
 </code></pre>
 <p>Note that building MicroVMs with the host increases build time and
 closure size of the host's system.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="imperative-microvm-management-with-the-microvm-command"><a class="header" href="#imperative-microvm-management-with-the-microvm-command">Imperative MicroVM management with the <code>microvm</code> command</a></h1>
+<p>Compartmentalizing services in an infrastructure landscape allows us to
+conduct maintenance individually and without affecting unrelated
+MicroVMs. The <code>microvm</code> command helps with that.</p>
+<h2 id="create-a-microvm"><a class="header" href="#create-a-microvm">Create a MicroVM</a></h2>
+<p>You can specify this MicroVM's source flake with <code>-f</code>. If omitted, the
+tool will assume <code>git+file:///etc/nixos</code>. The source flakeref will be
+kept in <code>/var/lib/microvms/*/flake</code> for future updating the MicroVM.</p>
+<pre><code class="language-bash">microvm -f git+https://... -c my-microvm
+</code></pre>
+<h3 id="enabling-microvm-autostart"><a class="header" href="#enabling-microvm-autostart">Enabling MicroVM autostart</a></h3>
+<p>Extension of the host's systemd units must happen declaratively in the
+host's NixOS configuration:</p>
+<pre><code class="language-nix">microvm.autostart = [
+  "myvm1"
+  "myvm2"
+  "myvm3"
+];
+</code></pre>
+<h2 id="update-a-microvm"><a class="header" href="#update-a-microvm">Update a MicroVM</a></h2>
+<p><em>Updating</em> does not refresh your packages but simply rebuilds the
+MicroVM. Use <code>nix flake update</code> to get new package versions.</p>
+<pre><code class="language-bash">microvm -u my-microvm
+</code></pre>
+<p>Until ways have been found to safely transfer the profile into the
+target /nix/store, and subsequently activate it, you must restart the
+MicroVM for the update to take effect.</p>
+<p>Use the <code>-R</code> flag to automatically restart if an update was built.</p>
+<h2 id="list-microvms"><a class="header" href="#list-microvms">List MicroVMs</a></h2>
+<p>Listing your MicroVMs is as trivial as <code>ls -1 /var/lib/microvms</code></p>
+<p>For more insight, the following command will read the current system
+version of all MicroVMs and compare them to what the corresponding
+flake evaluates. It is therefore quite slow to run, yet very useful
+for an updatable VM overview.</p>
+<pre><code class="language-bash">microvm -l
+</code></pre>
+<p>If you want a faster overview of booted and current versions, run
+this instead:</p>
+<pre><code class="language-bash">ls -l /var/lib/microvms/*/{current,booted}/share/microvm/system
+</code></pre>
+<h2 id="removing-microvms"><a class="header" href="#removing-microvms">Removing MicroVMs</a></h2>
+<p>First, stop the MicroVM:</p>
+<pre><code class="language-bash">systemctl stop microvm@$NAME
+</code></pre>
+<p>If you don't use absolute filesystem paths for sockets, volumes, or
+shares, all MicroVM state is kept under <code>/var/lib/microvms/$NAME/</code>.
+The <code>microvm@.serivce</code> systemd service template depends on existence
+of this directory.</p>
+<pre><code class="language-bash">rm -rf /var/lib/microvms/$NAME
+</code></pre>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="deploying-via-ssh"><a class="header" href="#deploying-via-ssh">Deploying via SSH</a></h1>
 <p>By running either from packages or through systemd services
 microvm.nix tries to support a wholesome Nix workflow: develop and
@@ -1503,52 +2097,6 @@ which is optional but expected by some Nix tooling.</li>
 <li>Finally, run <code>switch-to-configuration</code> with the provided parameter
 (eg. <code>switch</code>).</li>
 </ul>
-<div style="break-before: page; page-break-before: always;"></div><h1 id="imperative-microvm-management-with-the-microvm-command"><a class="header" href="#imperative-microvm-management-with-the-microvm-command">Imperative MicroVM management with the <code>microvm</code> command</a></h1>
-<p>Compartmentalizing services in an infrastructure landscape allows us to
-conduct maintenance individually and without affecting unrelated
-MicroVMs. The <code>microvm</code> command helps with that.</p>
-<h2 id="create-a-microvm"><a class="header" href="#create-a-microvm">Create a MicroVM</a></h2>
-<p>You can specify this MicroVM's source flake with <code>-f</code>. If omitted, the
-tool will assume <code>git+file:///etc/nixos</code>. The source flakeref will be
-kept in <code>/var/lib/microvms/*/flake</code> for future updating the MicroVM.</p>
-<pre><code class="language-bash">microvm -f git+https://... -c my-microvm
-</code></pre>
-<h3 id="enabling-microvm-autostart"><a class="header" href="#enabling-microvm-autostart">Enabling MicroVM autostart</a></h3>
-<p>Extension of the host's systemd units must happen declaratively in the
-host's NixOS configuration:</p>
-<pre><code class="language-nix">microvm.autostart = [
-  &quot;myvm1&quot;
-  &quot;myvm2&quot;
-  &quot;myvm3&quot;
-];
-</code></pre>
-<h2 id="update-a-microvm"><a class="header" href="#update-a-microvm">Update a MicroVM</a></h2>
-<p><em>Updating</em> does not refresh your packages but simply rebuilds the
-MicroVM. Use <code>nix flake update</code> to get new package versions.</p>
-<pre><code class="language-bash">microvm -u my-microvm
-</code></pre>
-<p>Until ways have been found to safely transfer the profile into the
-target /nix/store, and subsequently activate it, you must restart the
-MicroVM for the update to take effect.</p>
-<p>Use the <code>-R</code> flag to automatically restart if an update was built.</p>
-<h2 id="list-microvms"><a class="header" href="#list-microvms">List MicroVMs</a></h2>
-<p>Listing your MicroVMs is as trivial as <code>ls -1 /var/lib/microvms</code></p>
-<p>For more insight, the following command will read the current system
-version of all MicroVMs and compare them to what the corresponding
-flake evaluates. It is therefore quite slow to run, yet very useful
-for an updatable VM overview.</p>
-<pre><code class="language-bash">microvm -l
-</code></pre>
-<h2 id="removing-microvms"><a class="header" href="#removing-microvms">Removing MicroVMs</a></h2>
-<p>First, stop the MicroVM:</p>
-<pre><code class="language-bash">systemctl stop microvm@$NAME
-</code></pre>
-<p>If you don't use absolute filesystem paths for sockets, volumes, or
-shares, all MicroVM state is kept under <code>/var/lib/microvms/$NAME/</code>.
-The <code>microvm@.serivce</code> systemd service template depends on existence
-of this directory.</p>
-<pre><code class="language-bash">rm -rf /var/lib/microvms/$NAME
-</code></pre>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="conventions-between-microvm-packages-and-the-host"><a class="header" href="#conventions-between-microvm-packages-and-the-host">Conventions between MicroVM packages and the host</a></h1>
 <p>This section describes the interface that is used to run MicroVM
 packages with the flake's <code>host</code> module. While the <strong>microvm.nix</strong>
@@ -1561,7 +2109,7 @@ MicroVM deployments using the information on this page.</p>
 <tr><td><code>microvm.devices.*.path</code></td><td><code>share/microvm/pci-devices</code></td><td><code>microvm-pci-devices@.service</code></td><td>PCI devices that must be bound to the <strong>vfio-pci</strong> driver on the host</td></tr>
 <tr><td><code>microvm.shares.*.source</code></td><td><code>share/microvm/virtiofs/${tag}/source</code></td><td><code>microvm-virtiofsd@.service</code></td><td>Source directory of a <strong>virtiofs</strong> instance by tag</td></tr>
 <tr><td><code>microvm.shares.*.socket</code></td><td><code>share/microvm/virtiofs/${tag}/socket</code></td><td><code>microvm-virtiofsd@.service</code></td><td><strong>virtiofsd</strong> socket path by tag</td></tr>
-<tr><td></td><td><code>share/microvm/system</code></td><td></td><td><code>config.system.build.toplevel</code> symlink, used for comparing versions when running <code>microvm -l</code></td></tr>
+<tr><td><code>microvm.systemSymlink</code></td><td><code>share/microvm/system</code></td><td></td><td><code>config.system.build.toplevel</code> symlink, used for comparing versions when running <code>microvm -l</code></td></tr>
 </tbody></table>
 </div>
 <h2 id="generating-custom-operating-system-hypervisor-packages"><a class="header" href="#generating-custom-operating-system-hypervisor-packages">Generating custom operating system hypervisor packages</a></h2>
@@ -1580,7 +2128,16 @@ command</a>.</p>
 above.</p>
 </li>
 </ul>
+<p><a href="https://github.com/astro/microvm-solo5-spt">microvm-solo5-spt</a> is an
+example of a Flake that can run on a microvm.nix host.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="frequently-asked-questions"><a class="header" href="#frequently-asked-questions">Frequently Asked Questions</a></h1>
+<h2 id="are-there-elaborate-example-setups"><a class="header" href="#are-there-elaborate-example-setups">Are there elaborate example setups?</a></h2>
+<p>microvm.nix is used in these open-source infrastructure projects:</p>
+<ul>
+<li><a href="https://gitea.c3d2.de/c3d2/nix-config">C3D2 services</a></li>
+<li><a href="https://github.com/dd-ix/nix-config">DD-IX services</a></li>
+</ul>
+<p>Let us know if you know more!</p>
 <h2 id="can-i-support-the-development-and-maintenance-of-this-project"><a class="header" href="#can-i-support-the-development-and-maintenance-of-this-project">Can I support the development and maintenance of this project?</a></h2>
 <p><a href="https://github.com/sponsors/astro">❤ Sponsor</a></p>
 <h2 id="how-to-centralize-logging-with-journald"><a class="header" href="#how-to-centralize-logging-with-journald">How to centralize logging with journald?</a></h2>
@@ -1589,21 +2146,21 @@ making the journals available to the host as a share. Because journald
 identifies hosts by their <code>/etc/machine-id</code>, we propose to use static
 content for that file. Add a NixOS module like the following to your
 MicroVM configuration:</p>
-<pre><code class="language-nix">environment.etc.&quot;machine-id&quot; = {
-  mode = &quot;0644&quot;;
+<pre><code class="language-nix">environment.etc."machine-id" = {
+  mode = "0644";
   text =
     # change this to suit your flake's interface
-    self.lib.addresses.machineId.${config.networking.hostName} + &quot;\n&quot;;
+    self.lib.addresses.machineId.${config.networking.hostName} + "\n";
 };
 
 microvm.shares = [ {
   # On the host
-  source = &quot;/var/lib/microvms/${config.networking.hostName}/journal&quot;;
+  source = "/var/lib/microvms/${config.networking.hostName}/journal";
   # In the MicroVM
-  mountPoint = &quot;/var/log/journal&quot;;
-  tag = &quot;journal&quot;;
-  proto = &quot;virtiofs&quot;;
-  socket = &quot;journal.sock&quot;;
+  mountPoint = "/var/log/journal";
+  tag = "journal";
+  proto = "virtiofs";
+  socket = "journal.sock";
 } ];
 </code></pre>
 <p>Last, make the MicroVM journals available to your host. The
@@ -1613,7 +2170,7 @@ microvm.shares = [ {
     machineId = self.lib.addresses.machineId.${vmHost};
   in
     # creates a symlink of each MicroVM's journal under the host's /var/log/journal
-    &quot;L+ /var/log/journal/${machineId} - - - - /var/lib/microvms/${vmHost}/journal/${machineId}&quot;
+    "L+ /var/log/journal/${machineId} - - - - /var/lib/microvms/${vmHost}/journal/${machineId}"
 ) (builtins.attrNames self.lib.addresses.machineId);
 </code></pre>
 <p>Once your MicroVM's journal data is visible in the
@@ -1629,37 +2186,35 @@ does.</p>
 <pre><code class="language-nix">environment.systemPackages = [ (
   # Provide a manual updating script that fetches the latest
   # updated+built system from Hydra
-  pkgs.writeScriptBin &quot;update-microvm&quot; ''
-    #! ${pkgs.runtimeShell} -e
-
+  pkgs.writeShellScriptBin "update-microvm" ''
     if [ $# -lt 1 ]; then
-      NAMES=&quot;$(ls -1 /var/lib/microvms)&quot;
+      NAMES="$(ls -1 /var/lib/microvms)"
     else
-      NAMES=&quot;$@&quot;
+      NAMES="$@"
     fi
 
     for NAME in $NAMES; do
       echo MicroVM $NAME
       cd /var/lib/microvms/$NAME
       # Is this truly the flake that is being built on Hydra?
-      if [ &quot;$(cat flake)&quot; = &quot;git+https://gitea.example.org/org/nix-config?ref=flake-update&quot; ]; then
-        NEW=$(curl -sLH &quot;Accept: application/json&quot; https://hydra.example.org/job/org/nix-config/$NAME/latest | ${pkgs.jq}/bin/jq -er .buildoutputs.out.path)
+      if [ "$(cat flake)" = "git+https://gitea.example.org/org/nix-config?ref=flake-update" ]; then
+        NEW=$(curl -sLH "Accept: application/json" https://hydra.example.org/job/org/nix-config/$NAME/latest | ${pkgs.jq}/bin/jq -er .buildoutputs.out.path)
         nix copy --from https://nix-cache.example.org $NEW
 
         if [ -e booted ]; then
           nix store diff-closures $(readlink booted) $NEW
         elif [ -e current ]; then
-          echo &quot;NOT BOOTED! Diffing to old current:&quot;
+          echo "NOT BOOTED! Diffing to old current:"
           nix store diff-closures $(readlink current) $NEW
         else
-          echo &quot;NOT BOOTED?&quot;
+          echo "NOT BOOTED?"
         fi
 
         CHANGED=no
         if ! [ -e current ]; then
           ln -s $NEW current
           CHANGED=yes
-        elif [ &quot;$(readlink current)&quot; != $NEW ]; then
+        elif [ "$(readlink current)" != $NEW ]; then
           rm -f old
           cp --no-dereference current old
           rm -f current
@@ -1668,7 +2223,7 @@ does.</p>
         fi
       fi
 
-      if [ &quot;$CHANGED&quot; = &quot;yes&quot; ]; then
+      if [ "$CHANGED" = "yes" ]; then
         systemctl restart microvm@$NAME
       fi
       echo
@@ -1676,13 +2231,27 @@ does.</p>
   ''
 ) ];
 </code></pre>
-<h1 id="can-i-include-my-hosts-nixpkgs-channel-when-building-the-vm"><a class="header" href="#can-i-include-my-hosts-nixpkgs-channel-when-building-the-vm">Can I include my host's <code>&lt;nixpkgs&gt;</code> channel when building the VM?</a></h1>
+<h2 id="can-i-include-my-hosts-nixpkgs-channel-when-building-the-vm"><a class="header" href="#can-i-include-my-hosts-nixpkgs-channel-when-building-the-vm">Can I include my host's <code>&lt;nixpkgs&gt;</code> channel when building the VM?</a></h2>
 <p>Use the following configuration if you build your MicroVM with
 <code>--impure</code> from channels, not Flakes:</p>
 <pre><code class="language-nix">nix.nixPath = [
-  &quot;nixpkgs=${builtins.storePath &lt;nixpkgs&gt;}&quot;
+  "nixpkgs=${builtins.storePath &lt;nixpkgs&gt;}"
 ];
 </code></pre>
+<h2 id="how-do-i-let-the-microvm-user-access-block-devices"><a class="header" href="#how-do-i-let-the-microvm-user-access-block-devices">How do I let the <code>microvm</code> user access block devices?</a></h2>
+<p>You can re-add the following line to your host's NixOS configuration
+which was removed from microvm.nix:</p>
+<pre><code class="language-nix">users.users.microvm.extraGroups = [ "disk" ];
+</code></pre>
+<p>The more secure solution would be writing custom
+<code>services.udev.extraRules</code> that assign ownership/permissions to the
+individually used block devices.</p>
+<h2 id="my-virtiofs-shared-sops-nix-runsecrets-disappears-when-the-host-is-updated"><a class="header" href="#my-virtiofs-shared-sops-nix-runsecrets-disappears-when-the-host-is-updated">My virtiofs-shared sops-nix /run/secrets disappears when the host is updated!</a></h2>
+<p>A workaround may be setting <code>sops.keepGenerations = 0;</code>, effectively
+stopping sops-nix from ever removing old generations in
+<code>/run/secrets.d/</code>.</p>
+<p>That means that you still must reboot all MicroVMs to adapt any
+updated secrets.</p>
 
                     </main>
 
