@@ -37,7 +37,11 @@ let
   );
 
   qemuPkg =
-    if microvmConfig.cpu == null
+    if microvmConfig.qemu.package != null
+    then
+      # Use user-provided QEMU package
+      microvmConfig.qemu.package
+    else if microvmConfig.cpu == null
     then
       # When cross-compiling for a target host, select qemu for the target:
       pkgs.qemu_kvm
@@ -45,7 +49,9 @@ let
       # When cross-compiling for CPU emulation, select qemu for the host:
       pkgs.buildPackages.qemu;
 
-  qemu = overrideQemu qemuPkg;
+  qemu = if microvmConfig.qemu.package != null
+    then qemuPkg  # Don't apply overrides to user-provided package
+    else overrideQemu qemuPkg;
 
   inherit (microvmConfig) hostName vcpu mem balloon initialBalloonMem deflateOnOOM hotplugMem hotpluggedMem user interfaces shares socket forwardPorts devices vsock graphics storeOnDisk kernel initrdPath storeDisk;
   inherit (microvmConfig.qemu) machine extraArgs serialConsole;
@@ -59,6 +65,15 @@ let
     lib.any ({ bus, ... }: bus == "usb") microvmConfig.devices;
 
   arch = builtins.head (builtins.split "-" system);
+
+  # Validate that the custom QEMU package provides the required binary
+  _ = lib.mkIf (microvmConfig.qemu.package != null) (
+    assert lib.pathExists "${qemu}/bin/qemu-system-${arch}" || throw ''
+      The provided QEMU package at ${qemu} does not contain the required binary:
+      qemu-system-${arch}
+    '';
+    null
+  );
 
   cpuArgs = [
     "-cpu"

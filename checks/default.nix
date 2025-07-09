@@ -179,6 +179,7 @@ import ./shellcheck.nix args //
 
 import ./startup-shutdown.nix args //
 import ./shutdown-command.nix args //
+import ./qemu-override.nix args //
 
 builtins.foldl' (result: hypervisor:
   let

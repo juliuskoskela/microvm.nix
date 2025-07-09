@@ -515,6 +515,18 @@ in
       '';
     };
 
+    qemu.package = mkOption {
+      type = types.nullOr types.package;
+      default = null;
+      description = ''
+        Optional: Override the QEMU derivation used for this MicroVM.
+
+        When non-null, it must expose a binary named
+        `qemu-system-''${toString config.microvm.arch}`.
+        Useful for patched or downstream QEMU builds (e.g. Jetson GPU passthrough).
+      '';
+    };
+
     cloud-hypervisor.extraArgs = mkOption {
       type = with types; listOf str;
       default = [];
